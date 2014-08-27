@@ -1,3 +1,42 @@
-body {
-	color: red;
+#urlid{
+	border-width: none;
+	color: silver;
+	background-color: #F7F7F7; 
+	height: 20px;
+	margin-top: 0;
+	padding: 9px 15px 6px 15px;
+	vertical-align: top;
+	width: 700px;
+	margin: 0 5px 0 0;
+	padding-left: 15px;
+	margin-bottom: 5px;
+	float: left;
+	font-size: 19px;
+   
+}
+
+.button{
+	border: none;
+    display: block;
+    background: #136899;
+    height: 35px;
+    width: 80px;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 5px;
+    float: left;
+    font-size: 18px;
+}
+
+#url-form-button{
+  background: white;
+  margin: 35px auto;
+  width: 800px;
+  height: 100px;
+  position: relative;
+
+}
+
+.form-url {
+	width: 900px;
 }
