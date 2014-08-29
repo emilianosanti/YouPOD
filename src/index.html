@@ -1,41 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="build/react.js"></script>
-    <script src="build/JSXTransformer.js"></script>
-    <link rel="stylesheet" type="text/css" href="./css/main.css"> 
-    <meta charset = "UTP-8">
   </head>
   <body>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <div id="entirepage">
-      <div id="url-form-button" class="yt--wrapper">    
-          <form class="form-url"> 
-            <input name = "url"  type = "text" id= "urlid" class = "yt--input-url"></input>
-            <button class="button" type = "button" onclick ="function_add()">Add</button>
-          </form>
-      </div>
+    <div id="main">
     </div>
-    <script type="text/javascript">
-        function function_add() {
-        alert("Save in the playlist");
-    }
-      var plhold = document.getElementById("urlid");
-      plhold.value = "Enter the link of the video you want to add";
-      plhold.onfocus = function() {
-         if(plhold.value=="Enter the link of the video you want to add") {
-          plhold.value = "";
-         }
-      }
-      plhold.onblur = function() {
-        if (plhold.value == "") {
-          plhold.value = "Enter the link of the video you want to add";
-        }
-      } 
-    </script>
+    <script type="text/javascript" src="scripts/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
   </body>
 </html>

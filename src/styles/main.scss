@@ -1,18 +1,18 @@
+.yt--container {
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	width: auto;
+}
+
 .yt--input-url{
-	border-width: none;
-	color: silver;
 	background-color: #F7F7F7; 
-	height: 20px;
-	margin-top: 0;
-	padding: 9px 15px 6px 15px;
-	vertical-align: top;
-	width: 700px;
-	margin: 0 5px 0 0;
-	padding-left: 15px;
-	margin-bottom: 5px;
-	float: left;
+	color: silver;
 	font-size: 19px;
-   
+	height: 20px;
+	margin: 0 5px 5px 0;
+	padding: 9px 15px 6px 15px;
+	width: 600px;
 }
 
 .button{
@@ -37,6 +37,11 @@
 
 }
 
-.form-url {
-	width: 900px;
+.yt--form {
+	width: 100%;
+}
+
+.yt--iframe {
+	width: auto;
+	clear: both;
 }
