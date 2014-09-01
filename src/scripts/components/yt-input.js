@@ -6,7 +6,7 @@ var YTInput = React.createClass({
 
 	render: function() {
 		return (
-			<input className="yt--input-url">
+			<input className="yt--input-url" id="inputurl">
 				{this.props.children}
 			</input>
 		)
