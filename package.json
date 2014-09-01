@@ -27,7 +27,8 @@
     "gulp-notify": "1.5.0",
     "del": "0.1.2",
     "gulp-rename": "1.2.0",
-    "vinyl-source-stream": "0.1.1"
+    "vinyl-source-stream": "0.1.1",
+    "events": "^1.0.2"
   },
   "dependencies": {
     "react-tools": "~0.11.1",
