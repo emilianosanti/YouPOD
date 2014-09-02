@@ -1,7 +1,10 @@
 /** @jsx React.DOM */
 
 var React = require("react");
+var Flux = require('delorean.js').Flux;
+
 var VideoListStore = require('../stores/video-list-store');
+var Actions = require('../actions/actions');
 
 var VideoThumbnail = React.createClass({
 	getImageURL: function(videoId) {
@@ -13,42 +16,33 @@ var VideoThumbnail = React.createClass({
 	},
 
 	render: function() {
-		return (<div className="yt--videoThumbnail"><img src={this.getImageURL(this.props.videoId)}/></div>);
+		return (<li key={this.props.video.id} className="yt--videoThumbnail"><img src={this.getImageURL(this.props.video.id)}/></li>);
 	}
 });
 
 var VideoThumbnailList = React.createClass({
+	mixins: [Flux.mixins.storeListener],
+
 	propTypes: {
     	allVideos: React.PropTypes.array.isRequired
 	},
 
 	getInitialState: function() {
-		return VideoListStore.getAll();
+		return Actions.getAll();
 	},
-
-	componentDidMount: function() {
-    	VideoListStore.addChangeListener(this._onChange);
-  	},
-
-  	componentWillUnmount: function() {
-    	VideoListStore.removeChangeListener(this._onChange);
-  	},
 
 	render: function() {
-		var allVideos = this.props.allVideos
-		var videoThumbnails = [];
-
-	    for (var key in allVideos) {
-	    	console.log(allVideos[key].id);
-	      	videoThumbnails.push(<VideoThumbnail videoId={allVideos[key].id} />);
-	    }
-
-		return (<div className="yt--videoThumbnailList">{videoThumbnails}</div>);
-	},
-
-	_onChange: function() {
-    	this.setState(VideoListStore.getAll());
-  	}
+		var self = this;
+		return ( <ul className="yt--videoThumbnailList">
+				{this.stores.videoList.store._videos.map(
+					function(v) {
+						console.log('View: ' + JSON.stringify(v));
+						return (<VideoThumbnail key={v.id} video={v} />);
+					}	
+				)}
+				</ul> 
+			);
+	}
 });
 
 module.exports = VideoThumbnailList;

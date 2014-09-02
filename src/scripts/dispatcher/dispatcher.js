@@ -1,19 +1,22 @@
-var Dispatcher = function () {
-    this.dataStores = [];
-};
+var Flux = require('delorean.js').Flux;
+var videoListStore = require('../stores/video-list-store');
 
-Dispatcher.prototype.registerDataStore = function (dataStore) {
-    this.dataStores.push(dataStore);
-};
+var VideoDispatcher = Flux.createDispatcher({
+  addVideo: function (video) {
+    this.dispatch('add-video', video);
+  },
 
-Dispatcher.prototype.dispatch = function (commands) {
-    this.dataStores.forEach(
-    	function (dataStore) {
-        	dataStore.processActions(commands);
-    	}
-    );
-};
-
-var VideoDispatcher = new Dispatcher();
+  deleteVideo: function(id) {
+  	this.dispatch('delete-video', id);
+  },
+  
+  getAll: function() {
+  	this.dispatch('get-all', null);
+  },
+  
+  getStores: function () {
+    return {videoList: videoListStore};
+  }
+});
 
 module.exports = VideoDispatcher;
