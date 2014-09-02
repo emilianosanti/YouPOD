@@ -7,6 +7,9 @@ var loadTrigger = sdk.trigger();
 // YT API requires global ready event handler
 window.onYouTubeIframeAPIReady = function () {
   loadTrigger();
+
+  console.log('deleting onYouTubeIframeAPIReady');
+
   delete window.onYouTubeIframeAPIReady;
 };
 
@@ -28,6 +31,8 @@ var ReactYoutubePlayer = React.createClass({
 	propTypes: {
 	    id: React.PropTypes.string,
 	    url: React.PropTypes.string,
+	    height: React.PropTypes.string,
+    	width: React.PropTypes.string,
 	    autoplay: React.PropTypes.bool,
 	    playing: React.PropTypes.func,
 	    stopped: React.PropTypes.func,
@@ -36,12 +41,14 @@ var ReactYoutubePlayer = React.createClass({
 
   	getDefaultProps: function() {
 	    return {
-	      id: 'react-yt-player',
-	      url: undefined,
-	      autoplay: false,
-	      playing: noop,
-	      stopped: noop,
-	      ended: noop
+	      	id: 'react-yt-player',
+			height: '390',
+	      	width: '640',
+	      	url: undefined,
+	      	autoplay: false,
+	      	playing: noop,
+	      	stopped: noop,
+	      	ended: noop
 	    };
   	},
 
@@ -58,12 +65,16 @@ var ReactYoutubePlayer = React.createClass({
 	    var _this = this;
 	    // called once API has loaded.
 	    sdk(function(err, youtube) {
-	      var player = new youtube.Player(_this.props.id, {
-	        videoId: getVideoId(_this.props.url),
-	        events: {
-	          'onStateChange': _this._handlePlayerStateChange
-	        }
-	      });
+	    	console.log('Player - componentDidMount ['+ _this.props.height + ' , ' + _this.props.width + ']');
+	      var player = new youtube.Player(_this.props.id, 
+	      	{
+	        	videoId: getVideoId(_this.props.url),
+	        	height: _this.props.height,
+    			width: _this.props.width,
+	        	events: {
+	          		'onStateChange': _this._handlePlayerStateChange
+	        	}
+	      	});
 
 	      _this.setState({player: player});
 	    });

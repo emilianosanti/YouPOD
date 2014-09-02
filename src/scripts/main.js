@@ -3,6 +3,8 @@
 
 var React = require("react");
 var ReactYoutubePlayer = require("./components/player.js");
+
+
 var YTContainer = require('./components/yt-container.js');
 var YTForm = require('./components/yt-form.js');
 var YTInput = require('./components/yt-input.js');
@@ -20,7 +22,7 @@ React.renderComponent(
 			</YTButton>
 		</YTForm>
 		<YTIframe>
-			<ReactYoutubePlayer url="http://www.youtube.com/watch?v=I8cnKNB2WIk"/>
+			<ReactYoutubePlayer url="http://www.youtube.com/watch?v=I8cnKNB2WIk" height={screen.height} width={screen.availWidth}/>
 		</YTIframe>
 		<YTIframe>
 			<VideoThumbnailList dispatcher={VideoDispatcher} allVideos={_videos}/>
@@ -28,3 +30,4 @@ React.renderComponent(
 	</YTContainer>, 
     document.getElementById('main')
 );
+console.log('Main - componentDidMount ['+ screen.height + ' , ' + screen.availWidth + ']');
