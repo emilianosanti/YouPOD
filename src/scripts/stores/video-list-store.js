@@ -1,47 +1,43 @@
-var EventEmitter = require('events').EventEmitter;
-var merge = require('react/lib/merge');
+var Flux = require('delorean.js').Flux;
 
-var CHANGE_EVENT = 'change';
-var _videos = {};
+var VideoListStore = Flux.createStore({
+  _videos: [],
 
-function addVideo(videoId, title) {
-	_videos[videoId] = {
-		playing: false,
-		title: title,
-		id: videoId
-	};
-}
+  initialize: function (url) {
+    this._videos.push(
+      {id: "qlBYcR60npU", title: "Title", playing: false},
+      {id: "pT9RxINEbeU", title: "Title", playing: false},
+      {id: "n3o2ERbw0aY", title: "Title", playing: false},
+      {id: "NAOeJEVX9Bk", title: "Title", playing: false},
+      {id: "LDEhk8th4eI", title: "Title", playing: false}
+      )
+  },
 
-function removeVideo(videoId) {
-	delete _videos[videoId];
-}
+  getAll: function() {
+      return this._videos;
+  },
 
-var VideoListStore = merge(EventEmitter.prototype, {
-	processActions: function() {
-		return getAll();
-	},
+  getVideo: function(id) {
+    return this._videos[id];
+  },
 
-	getAll: function() {
-    	return _videos;
-  	},
+  addVideo: function(video) {
+    this._videos.push(video);
 
-	emitChange: function() {
-    	this.emit(CHANGE_EVENT);
-  	},
+    this.emit('change');
+  },
 
-  	/**
-   	* @param {function} callback
-   	*/
-  	addChangeListener: function(callback) {
-    	this.on(CHANGE_EVENT, callback);
-  	},
+  deleteVideo: function(id) {
+    delete this._videos[id];
+  },
 
-  	/**
-   	* @param {function} callback
-   	*/
-  	removeChangeListener: function(callback) {
-    	this.removeListener(CHANGE_EVENT, callback);
-  	}
+  actions: {
+    'add-video': 'addVideo',
+    'delete-video': 'deleteVideo',
+    'get-all': 'getAll'
+  }
 });
 
-module.exports = VideoListStore;
+var store = new VideoListStore();
+module.exports = store;
+
