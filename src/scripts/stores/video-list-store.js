@@ -31,10 +31,32 @@ var VideoListStore = Flux.createStore({
     delete this._videos[id];
   },
 
+  play: function(id) {
+      this._videos.forEach(
+          function playing(video) {
+
+            if (video.id === id) 
+              video.playing = true;
+            else
+              video.playing = false;
+          }
+      );
+      this.emit('change');
+  },
+
+  currentlyPlaying: function() {
+      return this.getAll().filter(
+          function(video) {
+            return video.playing;
+          }
+        )[0];
+  },
+
   actions: {
     'add-video': 'addVideo',
     'delete-video': 'deleteVideo',
-    'get-all': 'getAll'
+    'get-all': 'getAll',
+    'play': 'play'
   }
 });
 

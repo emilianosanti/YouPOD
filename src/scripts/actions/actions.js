@@ -9,8 +9,8 @@ var Actions = {
     	VideoDispatcher.deleteVideo(video);
   	},
 
-  	getAll: function() {
-  		return VideoDispatcher.getAll();
+  	play: function(videoId) {
+  		VideoDispatcher.play(videoId)
   	}
 };
 
