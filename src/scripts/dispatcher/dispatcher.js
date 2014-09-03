@@ -3,17 +3,17 @@ var videoListStore = require('../stores/video-list-store');
 
 var VideoDispatcher = Flux.createDispatcher({
   addVideo: function (video) {
-    this.dispatch('add-video', video);
+      this.dispatch('add-video', video);
   },
 
   deleteVideo: function(id) {
-  	this.dispatch('delete-video', id);
+      this.dispatch('delete-video', id);
   },
   
-  getAll: function() {
-  	this.dispatch('get-all', null);
+  play: function(videoId) {
+      this.dispatch('play', videoId);
   },
-  
+
   getStores: function () {
     return {videoList: videoListStore};
   }

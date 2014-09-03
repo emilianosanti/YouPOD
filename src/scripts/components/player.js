@@ -1,14 +1,13 @@
 /** @jsx React.DOM */
 
 var React = require("react");
+var Flux = require('delorean.js').Flux;
 var sdk = require("require-sdk")("https://www.youtube.com/iframe_api", "YT");
 var loadTrigger = sdk.trigger();
 
 // YT API requires global ready event handler
 window.onYouTubeIframeAPIReady = function () {
   loadTrigger();
-
-  console.log('deleting onYouTubeIframeAPIReady');
 
   delete window.onYouTubeIframeAPIReady;
 };
@@ -28,6 +27,8 @@ function getVideoId(url) {
 function noop() {}
 
 var ReactYoutubePlayer = React.createClass({
+	mixins: [Flux.mixins.storeListener],
+
 	propTypes: {
 	    id: React.PropTypes.string,
 	    url: React.PropTypes.string,
@@ -65,7 +66,7 @@ var ReactYoutubePlayer = React.createClass({
 	    var _this = this;
 	    // called once API has loaded.
 	    sdk(function(err, youtube) {
-	    	console.log('Player - componentDidMount ['+ _this.props.height + ' , ' + _this.props.width + ']');
+	    	console.log('Youtube player playing: ' + _this.props.url);
 	      var player = new youtube.Player(_this.props.id, 
 	      	{
 	        	videoId: getVideoId(_this.props.url),
@@ -81,9 +82,17 @@ var ReactYoutubePlayer = React.createClass({
 	},
 
 	componentWillUpdate: function(nextProps) {
+		console.log('componentWillUpdate: ' + JSON.stringify(nextProps));
 	    if (this.props.url !== nextProps.url) {
 	      this._loadNewUrl(nextProps.url);
 	    }
+  	},
+
+  	storeDidChange: function (storeName) {
+  		console.log('storeDidChange: ' + storeName);
+    	var currentlyPlaying = this.stores.videoList.store.currentlyPlaying().id;
+  		
+  		this.state.player.loadVideoById(currentlyPlaying);
   	},
 
   	/**

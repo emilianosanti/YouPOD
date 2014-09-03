@@ -42,9 +42,9 @@ gulp.task('browser-sync', function() {
     });
 });
 
-gulp.task('clean-build', ['clean']);
+gulp.task('build', ['styles', 'scripts', 'markup'])
 
-gulp.task('default', ['styles', 'scripts', 'markup', 'browser-sync'], function () {
+gulp.task('default', ['build', 'browser-sync'], function () {
     gulp.watch('src/styles/**/*', ['styles', browserSync.reload]);
     gulp.watch('src/scripts/**/*', ['scripts', browserSync.reload]);
     gulp.watch('src/index.html', ['markup', browserSync.reload]);
