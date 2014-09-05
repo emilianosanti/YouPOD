@@ -16,18 +16,18 @@ var App = React.createClass({
 	mixins: [Flux.mixins.storeListener],
 
 	getInitialState: function() {
-    	return this.stores.videoList.store.getAll();
+    	return {
+    		videoList: this.stores.videoList.store.getAll()
+    	};
   	},
 
   	render: function() {
   		return (
 	  		<YTContainer>
-				<YTForm>
 					<YTInput>
 					</YTInput>
 					<YTButton>
 					</YTButton>
-				</YTForm>
 				<YTIframe>
 					<ReactYoutubePlayer 
 						url={this.currentlyPlayingURL()}
@@ -35,10 +35,19 @@ var App = React.createClass({
 						width={this.calculatePlayerWidth()}/>
 				</YTIframe>
 				<YTIframe>
-					<VideoThumbnailList videos={this.stores.videoList.store.getAll()}/>
+					<VideoThumbnailList videos={this.state.videoList}/>
 				</YTIframe>
 			</YTContainer>
 		)
+  	},
+
+  	storeDidChange: function (storeName) {
+  		console.log('storeDidChange: ' + storeName);
+    	
+    	this.setState({
+    		videoList: this.stores.videoList.store.getAll()
+    	})  		
+  		
   	},
 
   	currentlyPlayingURL: function() {

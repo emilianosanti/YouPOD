@@ -3,29 +3,35 @@
 	margin: 0;
 	padding: 0;
 	width: auto;
+
 }
 
 .yt--input-url{
-	background-color: #F7F7F7; 
-	color: silver;
-	font-size: 19px;
+	background-color: #F8F8F8 ; 
+	color: black;
+	font-size: 18px;
 	height: 20px;
 	margin: 0 5px 5px 0;
-	padding: 9px 15px 6px 15px;
+	padding: 9px 15px 5px 15px;
 	width: 600px;
+
+	&:hover{
+		border-color: #B8B8B8;
+	}
 }
+
 
 .yt--button{
 	border: none;
-    display: block;
     background: #136899;
-    height: 35px;
+    height: 38px;
     width: 80px;
     color: #ffffff;
     text-align: center;
     border-radius: 5px;
     float: center;
     font-size: 18px;
+
 }
 
 .yt--wrapper{
@@ -39,11 +45,25 @@
 
 .yt--form {
 	width: 100%;
+	background-clip: border-box;
+	background-origin: padding-box;
+	background-size: auto;
+	display: block;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	height: 102px;
+	margin-left: 0px;
+	margin-top: 5px;
+	padding-left: 0px;
+	padding-top: 0px;
+	width: auto;
 }
 
 .yt--iframe {
 	width: auto;
 	clear: both;
+	padding-top: 25px;
 }
 
 .yt--videoThumbnail {
@@ -54,4 +74,8 @@
 
 .yt--videoThumbnailList {
 	
+}
+
+.yt--body {
+	background:#D8D8D8;
 }

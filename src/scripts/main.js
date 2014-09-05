@@ -25,3 +25,5 @@ var _videos = [
 React.renderComponent(
 	<App dispatcher={VideoDispatcher} />, document.getElementById('main')
 );
+
+
