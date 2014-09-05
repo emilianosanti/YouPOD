@@ -9,6 +9,9 @@ var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
 var server = require('gulp-express');
 
+var BUILD_CLIENT_ROOT = 'build/client';
+var BUILD_SERVER_ROOT = 'build/server';
+
 gulp.task('clean', function(cb) {
     del(['build'], cb);
     
@@ -18,7 +21,7 @@ gulp.task('clean', function(cb) {
 gulp.task('styles', function() {
 	return gulp.src(['src/styles/main.scss'])
 		.pipe(sass())
-		.pipe(gulp.dest('build/css/'))
+		.pipe(gulp.dest(BUILD_CLIENT_ROOT + '/css/'));
 });
 
 gulp.task('scripts', function () {
@@ -27,23 +30,28 @@ gulp.task('scripts', function () {
 
   return stream
     .pipe(source('main.js'))
-    .pipe(gulp.dest('build/scripts/'));
+    .pipe(gulp.dest(BUILD_CLIENT_ROOT + '/scripts/'));
 });
 
 gulp.task('markup', function() {
     return gulp.src (['src/index.html'])
-        .pipe(gulp.dest('build/'));
+        .pipe(gulp.dest(BUILD_CLIENT_ROOT + '/'));
 });
 
 gulp.task('browser-sync', function() {
     browserSync({
         server: {
-            baseDir: 'build'
+            baseDir: BUILD_CLIENT_ROOT
         }
     });
 });
 
-gulp.task('server', function () {
+gulp.task('build-server', function() {
+    return gulp.src(['src/scripts/server/server.js'])
+        .pipe(gulp.dest(BUILD_SERVER_ROOT + '/'));
+});
+
+gulp.task('server', ['build-server'], function () {
     //start the server at the beginning of the task
     server.run({
         file: 'src/scripts/server/server.js'
