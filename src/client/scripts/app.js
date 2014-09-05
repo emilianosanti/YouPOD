@@ -42,7 +42,8 @@ var App = React.createClass({
 					<ReactYoutubePlayer 
 						id={this.state.currentlyPlayingVideo?this.state.currentlyPlayingVideo.id:undefined}
 						height={this.calculatePlayerHeight()} 
-						width={this.calculatePlayerWidth()}/>
+						width={this.calculatePlayerWidth()}
+            ended={this._handleEnd}/>
 				</YTIframe>
 				<YTIframe>
 					<VideoThumbnailList videos={this.state.videolist}/>
@@ -61,25 +62,28 @@ var App = React.createClass({
   	},
 
   	currentlyPlayingURL: function() {
-  		var currentlyPlayingVideo = this.stores.videoList.store.getAll().filter(
-  				function(video) {
-  					return video.playing;
-  				}
-  			);
+  		var currentlyPlayingVideo = this.stores.videoList.store.currentlyPlaying();
 
   		if (currentlyPlayingVideo.length > 0)
-  			return 'http://www.youtube.com/watch?v=' + currentlyPlayingVideo[0].id;
+  			return 'http://www.youtube.com/watch?v=' + currentlyPlayingVideo.id;
   		else
   			return undefined;
   	},
 
   	calculatePlayerWidth: function() {
-		return '' + (screen.availWidth - ((screen.availWidth * 20) / 100));
-	},
+		  return '' + (screen.availWidth - ((screen.availWidth * 20) / 100));
+    },
 
 	calculatePlayerHeight: function() {
 		return '' + (screen.height - ((screen.height * 45) / 100));
-	}
+	},
+
+  _handleEnd: function() {
+    console.log(this.state.currentlyPlayingVideo.videoId + ' has ended');
+
+    // Play next video
+    Actions.play(this.state.currentlyPlayingVideo.nextVideoId);
+  }
 });
 
 module.exports = App;

@@ -66,6 +66,7 @@ var ReactYoutubePlayer = React.createClass({
 	    var _this = this;
 	    // called once API has loaded.
 	    sdk(function(err, youtube) {
+	    	console.log('Player - Creating youtube player: ' + _this.props.videoId);
 	      var player = new youtube.Player(_this.props.id, 
 	      	{
 	        	videoId: _this.props.videoId,
