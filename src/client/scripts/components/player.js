@@ -88,7 +88,7 @@ var ReactYoutubePlayer = React.createClass({
   	},
 
   	storeDidChange: function (storeName) {
-  		console.log('Player - storeDidChange: ' + currentlyPlaying);
+  		console.log('Player - storeDidChange: ');
 
     	var currentlyPlaying = this.stores.videoList.store.currentlyPlaying().videoId;
     	

@@ -23,7 +23,8 @@ var VideoThumbnailList = React.createClass({
 	
 						function(v, i) {
 							return (
-								<li key={v.videoId}  className="yt--videoThumbnail">
+								<li key={v.videoId}  
+									className="yt--videoThumbnail">
 									<a href="#" onClick={self.play.bind(self, i)}>
 										<img src={self.getImageURL(v.videoId)}/>
 									</a>

@@ -3,14 +3,12 @@ var Flux = require('delorean.js').Flux;
 var VideoListStore = Flux.createStore({
   _videos: [],
 
-  initialize: function (url) {
-    this._videos.push(
-      {id: "qlBYcR60npU", title: "Title", playing: false},
-      {id: "pT9RxINEbeU", title: "Title", playing: false},
-      {id: "n3o2ERbw0aY", title: "Title", playing: false},
-      {id: "NAOeJEVX9Bk", title: "Title", playing: false},
-      {id: "LDEhk8th4eI", title: "Title", playing: false}
-      )
+  addAll: function(newVideos) {
+    for (var i = 0; i < newVideos.length; i++) {
+      this._videos.push(newVideos[i]);
+    }
+
+    this.emit('change');
   },
 
   getAll: function() {
@@ -61,7 +59,8 @@ var VideoListStore = Flux.createStore({
     'add-video': 'addVideo',
     'delete-video': 'deleteVideo',
     'get-all': 'getAll',
-    'play': 'play'
+    'play': 'play',
+    'add-all': 'addAll'
   }
 });
 
