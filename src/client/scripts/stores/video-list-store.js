@@ -44,17 +44,30 @@ var VideoListStore = Flux.createStore({
   },
 
   currentlyPlaying: function() {
+<<<<<<< HEAD:src/scripts/stores/video-list-store.js
       var currentlyPlayingVideo = this.getAll().filter(
+=======
+      var currentlyPlayingVideoArray = this._videos.filter(
+>>>>>>> Leandro Soler - Changing the structure:src/client/scripts/stores/video-list-store.js
           function(video) {
             return video.playing;
           }
         )[0];
 
+<<<<<<< HEAD:src/scripts/stores/video-list-store.js
       console.log(currentlyPlayingVideo);
       if (currentlyPlayingVideo === undefined)
         return {id: "", title: "", playing: false};
       else
         return currentlyPlayingVideo;
+=======
+      
+      if (currentlyPlayingVideoArray.length <= 0)
+        return {videoId: '', title: '', playing: false}
+      else {
+        return currentlyPlayingVideoArray[0];
+      }
+>>>>>>> Leandro Soler - Changing the structure:src/client/scripts/stores/video-list-store.js
   },
 
   actions: {

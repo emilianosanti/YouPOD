@@ -12,6 +12,12 @@ var server = require('gulp-express');
 var BUILD_CLIENT_ROOT = 'build/client';
 var BUILD_SERVER_ROOT = 'build/server';
 
+var CLIENT_ROOT = './src/client';
+var CLIENT_ROOT_SCRIPTS = CLIENT_ROOT + '/scripts';
+var CLIENT_ROOT_STYLES = CLIENT_ROOT + '/styles';
+
+var SERVER_ROOT = './src/server';
+
 gulp.task('clean', function(cb) {
     del(['build'], cb);
     
@@ -19,13 +25,13 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('styles', function() {
-	return gulp.src(['src/styles/main.scss'])
+	return gulp.src([CLIENT_ROOT_STYLES + '/main.scss'])
 		.pipe(sass())
 		.pipe(gulp.dest(BUILD_CLIENT_ROOT + '/css/'));
 });
 
 gulp.task('scripts', function () {
-  var bundler = browserify('./src/scripts/main.js', {basedir: __dirname}).transform(reactify);
+  var bundler = browserify(CLIENT_ROOT_SCRIPTS + '/main.js', {basedir: __dirname}).transform(reactify);
   var stream = bundler.bundle();
 
   return stream
@@ -34,36 +40,37 @@ gulp.task('scripts', function () {
 });
 
 gulp.task('markup', function() {
-    return gulp.src (['src/index.html'])
+    return gulp.src ([CLIENT_ROOT + '/index.html'])
         .pipe(gulp.dest(BUILD_CLIENT_ROOT + '/'));
 });
 
 gulp.task('browser-sync', function() {
     browserSync({
         server: {
-            baseDir: BUILD_CLIENT_ROOT
+            baseDir: BUILD_CLIENT_ROOT,
+            port: 4001
         }
     });
 });
 
 gulp.task('build-server', function() {
-    return gulp.src(['src/scripts/server/server.js'])
+    return gulp.src([SERVER_ROOT + '/server.js'])
         .pipe(gulp.dest(BUILD_SERVER_ROOT + '/'));
 });
 
 gulp.task('server', ['build-server'], function () {
     //start the server at the beginning of the task
     server.run({
-        file: 'src/scripts/server/server.js'
+        file: BUILD_SERVER_ROOT + '/server.js'
     });
 
     //restart the server when file changes
-    gulp.watch(['src/scripts/server/*.js'], server.notify);
+    gulp.watch([SERVER_ROOT + '/*.js'], server.notify);
 });
 
 gulp.task('build', ['styles', 'scripts', 'markup'])
 
-gulp.task('default', ['build', 'browser-sync'], function () {
+gulp.task('default', ['build', 'server'], function () {
     gulp.watch('src/styles/**/*', ['styles', browserSync.reload]);
     gulp.watch('src/scripts/**/*', ['scripts', browserSync.reload]);
     gulp.watch('src/index.html', ['markup', browserSync.reload]);

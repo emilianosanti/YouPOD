@@ -3,9 +3,12 @@ var app = express();
 var bodyParser = require('body-parser');
 
 var port = process.env.PORT || 4001;
+var CLIENT_ROOT = '/home/developer/work/learn-js/build/client'
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
+console.log(CLIENT_ROOT);
+app.use(express.static(CLIENT_ROOT));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
@@ -13,6 +16,7 @@ app.use(function(req, res, next) {
       res.header("Access-Control-Allow-Headers", "X-Requested-With");
       next();
     });
+
 
 var router = express.Router();
 
