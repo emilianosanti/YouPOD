@@ -6,7 +6,7 @@ var Actions = {
     	VideoDispatcher.addVideo(video);
   	},
 
-	deleteVideo: function (video) {
+    deleteVideo: function (video) {
     	VideoDispatcher.deleteVideo(video);
   	},
 

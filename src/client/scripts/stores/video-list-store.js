@@ -32,7 +32,7 @@ var VideoListStore = Flux.createStore({
       this._videos.forEach(
           function playing(video) {
 
-            if (video.id === id) 
+            if (video.videoId === id) 
               video.playing = true;
             else
               video.playing = false;
