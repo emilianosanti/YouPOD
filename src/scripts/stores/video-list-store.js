@@ -23,7 +23,6 @@ var VideoListStore = Flux.createStore({
 
   addVideo: function(video) {
     this._videos.push(video);
-
     this.emit('change');
   },
 
@@ -45,11 +44,17 @@ var VideoListStore = Flux.createStore({
   },
 
   currentlyPlaying: function() {
-      return this.getAll().filter(
+      var currentlyPlayingVideo = this.getAll().filter(
           function(video) {
             return video.playing;
           }
         )[0];
+
+      console.log(currentlyPlayingVideo);
+      if (currentlyPlayingVideo === undefined)
+        return {id: "", title: "", playing: false};
+      else
+        return currentlyPlayingVideo;
   },
 
   actions: {
