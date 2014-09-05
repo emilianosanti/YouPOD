@@ -51,17 +51,17 @@ var VideoListStore = Flux.createStore({
   },
 
   currentlyPlaying: function() {
-      var currentlyPlayingVideo = this._videos.find(
+      var currentlyPlayingVideoArray = this._videos.filter(
           function(video) {
             return video.playing;
           }
         );
 
       
-      if (currentlyPlayingVideo == undefined)
+      if (currentlyPlayingVideoArray.length <= 0)
         return {videoId: '', title: '', playing: false}
       else {
-        return currentlyPlayingVideo;
+        return currentlyPlayingVideoArray[0];
       }
   },
 
