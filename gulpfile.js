@@ -7,6 +7,7 @@ var notify = require('gulp-notify');
 var del = require('del');
 var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
+var server = require('gulp-express');
 
 gulp.task('clean', function(cb) {
     del(['build'], cb);
@@ -40,6 +41,16 @@ gulp.task('browser-sync', function() {
             baseDir: 'build'
         }
     });
+});
+
+gulp.task('server', function () {
+    //start the server at the beginning of the task
+    server.run({
+        file: 'src/scripts/server/server.js'
+    });
+
+    //restart the server when file changes
+    gulp.watch(['src/scripts/server/*.js'], server.notify);
 });
 
 gulp.task('build', ['styles', 'scripts', 'markup'])

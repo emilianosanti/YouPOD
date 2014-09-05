@@ -31,7 +31,7 @@ var ReactYoutubePlayer = React.createClass({
 
 	propTypes: {
 	    id: React.PropTypes.string,
-	    url: React.PropTypes.string,
+	    videoId: React.PropTypes.string,
 	    height: React.PropTypes.string,
     	width: React.PropTypes.string,
 	    autoplay: React.PropTypes.bool,
@@ -43,9 +43,9 @@ var ReactYoutubePlayer = React.createClass({
   	getDefaultProps: function() {
 	    return {
 	      	id: 'react-yt-player',
+	      	videoId: undefined,
 			height: '390',
 	      	width: '640',
-	      	url: undefined,
 	      	autoplay: false,
 	      	playing: noop,
 	      	stopped: noop,
@@ -66,10 +66,9 @@ var ReactYoutubePlayer = React.createClass({
 	    var _this = this;
 	    // called once API has loaded.
 	    sdk(function(err, youtube) {
-	    	console.log('Youtube player playing: ' + _this.props.url);
 	      var player = new youtube.Player(_this.props.id, 
 	      	{
-	        	videoId: getVideoId(_this.props.url),
+	        	videoId: _this.props.videoId,
 	        	height: _this.props.height,
     			width: _this.props.width,
 	        	events: {
@@ -83,16 +82,18 @@ var ReactYoutubePlayer = React.createClass({
 
 	componentWillUpdate: function(nextProps) {
 		console.log('componentWillUpdate: ' + JSON.stringify(nextProps));
-	    if (this.props.url !== nextProps.url) {
-	      this._loadNewUrl(nextProps.url);
+		if(this.props.videoId !== nextProps.videoId) {
+	    	this.state.player.loadVideoById(nextProps.videoId);
 	    }
   	},
 
   	storeDidChange: function (storeName) {
-  		console.log('storeDidChange: ' + storeName);
-    	var currentlyPlaying = this.stores.videoList.store.currentlyPlaying().id;
-  		
-  		this.state.player.loadVideoById(currentlyPlaying);
+  		console.log('Player - storeDidChange: ' + currentlyPlaying);
+
+    	var currentlyPlaying = this.stores.videoList.store.currentlyPlaying().videoId;
+    	
+    	if (currentlyPlaying)
+  			this.state.player.loadVideoById(currentlyPlaying);
   	},
 
   	/**

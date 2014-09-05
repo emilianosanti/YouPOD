@@ -3,60 +3,74 @@ var Flux = require('delorean.js').Flux;
 var VideoListStore = Flux.createStore({
   _videos: [],
 
-  initialize: function (url) {
-    this._videos.push(
-      {id: "qlBYcR60npU", title: "Title", playing: false},
-      {id: "pT9RxINEbeU", title: "Title", playing: false},
-      {id: "n3o2ERbw0aY", title: "Title", playing: false},
-      {id: "NAOeJEVX9Bk", title: "Title", playing: false},
-      {id: "LDEhk8th4eI", title: "Title", playing: false}
-      )
-  },
-
   getAll: function() {
       return this._videos;
   },
 
-  getVideo: function(id) {
-    return this._videos[id];
+  getVideo: function(videoId) {
+    return this._videos[videoId];
+  },
+
+  addAll: function(videos) {
+    console.log('Store - addAll ' + JSON.stringify(videos));
+
+    for (var i = 0; i < videos.length; i++) {
+      this._videos.push(videos[i]);  
+    }
+    
+    console.log(JSON.stringify(this._videos));
+
+    this.emit('change');    
   },
 
   addVideo: function(video) {
+    console.log('Store - addVideo ' + JSON.stringify(video));
     this._videos.push(video);
 
     this.emit('change');
   },
 
-  deleteVideo: function(id) {
-    delete this._videos[id];
+  deleteVideo: function(videoId) {
+    delete this._videos[videoId];
   },
 
-  play: function(id) {
+  play: function(videoId) {
+      console.log('Store - play: ' + videoId);
       this._videos.forEach(
           function playing(video) {
-
-            if (video.id === id) 
+            
+            if (video.videoId === videoId) {
               video.playing = true;
-            else
+              console.log('playing ' + video.videoId);
+            } else
               video.playing = false;
           }
       );
+
       this.emit('change');
   },
 
   currentlyPlaying: function() {
-      return this.getAll().filter(
+      var currentlyPlayingVideo = this._videos.find(
           function(video) {
             return video.playing;
           }
-        )[0];
+        );
+
+      
+      if (currentlyPlayingVideo == undefined)
+        return {videoId: '', title: '', playing: false}
+      else {
+        return currentlyPlayingVideo;
+      }
   },
 
   actions: {
     'add-video': 'addVideo',
     'delete-video': 'deleteVideo',
     'get-all': 'getAll',
-    'play': 'play'
+    'play': 'play',
+    'add-all': 'addAll'
   }
 });
 

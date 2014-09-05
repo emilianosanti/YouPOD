@@ -2,6 +2,7 @@
 
 var React = require("react");
 var Flux = require('delorean.js').Flux;
+var $ = require('jquery');
 
 var ReactYoutubePlayer = require("./components/player.js");
 var YTContainer = require('./components/yt-container.js');
@@ -11,15 +12,26 @@ var YTIframe = require('./components/yt-iframe.js');
 var YTButton = require('./components/yt-button.js');
 var VideoThumbnailList = require('./components/yt-video-thumbnail-list.js');
 var VideoDispatcher = require('./dispatcher/dispatcher');
+var Actions = require('./actions/actions');
 
 var App = React.createClass({
 	mixins: [Flux.mixins.storeListener],
 
 	getInitialState: function() {
-    	return this.stores.videoList.store.getAll();
+    	return {
+    		videolist: [],
+    		currentlyPlayingVideo: undefined
+    	};
+  	},
+
+  	componentDidMount: function() {
+  		console.log('App - componentDidMount');
+
+  		Actions.retrieveVideoList();
   	},
 
   	render: function() {
+  		console.log('App - render: ' + JSON.stringify(this.state));
   		return (
 	  		<YTContainer>
 				<YTForm>
@@ -30,15 +42,24 @@ var App = React.createClass({
 				</YTForm>
 				<YTIframe>
 					<ReactYoutubePlayer 
-						url={this.currentlyPlayingURL()}
+						id={this.state.currentlyPlayingVideo?this.state.currentlyPlayingVideo.id:undefined}
 						height={this.calculatePlayerHeight()} 
 						width={this.calculatePlayerWidth()}/>
 				</YTIframe>
 				<YTIframe>
-					<VideoThumbnailList videos={this.stores.videoList.store.getAll()}/>
+					<VideoThumbnailList videos={this.state.videolist}/>
 				</YTIframe>
 			</YTContainer>
 		)
+  	},
+
+  	storeDidChange: function (storeName) {
+  		console.log('App - storeDidChange: ');
+
+  		this.setState({
+  			videolist: this.stores.videoList.store.getAll(),
+  			currentlyPlayingVideo: this.stores.videoList.store.currentlyPlaying()
+  		});
   	},
 
   	currentlyPlayingURL: function() {
