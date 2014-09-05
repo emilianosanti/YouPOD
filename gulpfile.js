@@ -15,6 +15,7 @@ var BUILD_SERVER_ROOT = 'build/server';
 var CLIENT_ROOT = './src/client';
 var CLIENT_ROOT_SCRIPTS = CLIENT_ROOT + '/scripts';
 var CLIENT_ROOT_STYLES = CLIENT_ROOT + '/styles';
+var CLIENT_ROOT_IMAGES = CLIENT_ROOT + '/images';
 
 var SERVER_ROOT = './src/server';
 
@@ -58,6 +59,11 @@ gulp.task('build-server', function() {
         .pipe(gulp.dest(BUILD_SERVER_ROOT + '/'));
 });
 
+gulp.task('images', function() {
+    return gulp.src ([CLIENT_ROOT_IMAGES + '/*'])
+        .pipe(gulp.dest(BUILD_CLIENT_ROOT + '/css/images/'));
+});
+
 gulp.task('server', ['build-server'], function () {
     //start the server at the beginning of the task
     server.run({
@@ -68,7 +74,7 @@ gulp.task('server', ['build-server'], function () {
     gulp.watch([SERVER_ROOT + '/*.js'], server.notify);
 });
 
-gulp.task('build', ['styles', 'scripts', 'markup'])
+gulp.task('build', ['styles', 'scripts', 'markup', 'images'])
 
 gulp.task('default', ['build', 'server'], function () {
     gulp.watch('src/styles/**/*', ['styles', browserSync.reload]);

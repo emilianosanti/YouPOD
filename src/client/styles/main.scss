@@ -14,6 +14,7 @@
 	margin: 0 5px 5px 0;
 	padding: 9px 15px 5px 15px;
 	width: 600px;
+	background-color: rgba(255, 255, 255, 0.5);
 
 	&:hover{
 		border-color: #B8B8B8;
@@ -22,16 +23,26 @@
 
 
 .yt--button{
-	border: none;
-    background: #136899;
-    height: 38px;
-    width: 80px;
-    color: #ffffff;
+	border: 3px solid #8E4600;
+    background: transparent;
+    height: 40px;
+    width: 40px;
+    color: #000;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 50%;
     float: center;
-    font-size: 18px;
+    font-size: 25px;
+   	background-color: rgba(255, 255, 255, 0.5);
 
+
+    &:active {
+    	position:relative;
+		top:1px;
+    }
+
+    &:focus {
+    	outline-style: none;
+    }
 }
 
 .yt--wrapper{
@@ -73,9 +84,9 @@
 }
 
 .yt--videoThumbnailList {
-	
+
 }
 
 .yt--body {
-	background:#D8D8D8;
+	background-image: url(images/ytback.jpg);
 }
