@@ -92,7 +92,8 @@ var ReactYoutubePlayer = React.createClass({
   		console.log('storeDidChange: ' + storeName);
     	var currentlyPlaying = this.stores.videoList.store.currentlyPlaying().id;
   		
-  		this.state.player.loadVideoById(currentlyPlaying);
+  		if (currentlyPlaying)
+  			this.state.player.loadVideoById(currentlyPlaying);
   	},
 
   	/**
