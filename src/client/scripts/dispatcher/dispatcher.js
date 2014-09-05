@@ -14,6 +14,11 @@ var VideoDispatcher = Flux.createDispatcher({
       this.dispatch('play', videoId);
   },
 
+  addAll: function(videos) {
+    console.log('VideoDispatcher - addAll: ' + videos);
+    this.dispatch('add-all', videos);
+  },
+
   getStores: function () {
     return {videoList: videoListStore};
   }

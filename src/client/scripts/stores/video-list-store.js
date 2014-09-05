@@ -3,14 +3,12 @@ var Flux = require('delorean.js').Flux;
 var VideoListStore = Flux.createStore({
   _videos: [],
 
-  initialize: function (url) {
-    this._videos.push(
-      {id: "qlBYcR60npU", title: "Title", playing: false},
-      {id: "pT9RxINEbeU", title: "Title", playing: false},
-      {id: "n3o2ERbw0aY", title: "Title", playing: false},
-      {id: "NAOeJEVX9Bk", title: "Title", playing: false},
-      {id: "LDEhk8th4eI", title: "Title", playing: false}
-      )
+  addAll: function(newVideos) {
+    for (var i = 0; i < newVideos.length; i++) {
+      this._videos.push(newVideos[i]);
+    }
+
+    this.emit('change');
   },
 
   getAll: function() {
@@ -44,24 +42,25 @@ var VideoListStore = Flux.createStore({
   },
 
   currentlyPlaying: function() {
-      var currentlyPlayingVideo = this.getAll().filter(
+      var currentlyPlayingVideoArray = this._videos.filter(
           function(video) {
             return video.playing;
           }
-        )[0];
+        );
 
-      console.log(currentlyPlayingVideo);
-      if (currentlyPlayingVideo === undefined)
-        return {id: "", title: "", playing: false};
-      else
-        return currentlyPlayingVideo;
+      if (currentlyPlayingVideoArray.length <= 0)
+        return {videoId: '', title: '', playing: false}
+      else {
+        return currentlyPlayingVideoArray[0];
+      }
   },
 
   actions: {
     'add-video': 'addVideo',
     'delete-video': 'deleteVideo',
     'get-all': 'getAll',
-    'play': 'play'
+    'play': 'play',
+    'add-all': 'addAll'
   }
 });
 

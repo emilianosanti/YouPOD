@@ -28,11 +28,16 @@
     "del": "0.1.2",
     "gulp-rename": "1.2.0",
     "vinyl-source-stream": "0.1.1",
-    "events": "^1.0.2"
+    "events": "^1.0.2",
+    "gulp-express": "0.0.9"
   },
   "dependencies": {
     "react-tools": "~0.11.1",
+    "react-async": "1.0.1",
     "require-sdk": "0.0.2",
-    "delorean.js": "0.6.0"
+    "delorean.js": "0.6.0",
+    "express": "4.8.7",
+    "body-parser": "~1.0.1",
+    "jquery": "^2.1.1"
   }
 }

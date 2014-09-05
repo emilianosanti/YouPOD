@@ -23,9 +23,10 @@ var VideoThumbnailList = React.createClass({
 	
 						function(v, i) {
 							return (
-								<li key={v.id}  className="yt--videoThumbnail">
+								<li key={v.videoId}  
+									className="yt--videoThumbnail">
 									<a href="#" onClick={self.play.bind(self, i)}>
-										<img src={self.getImageURL(v.id)}/>
+										<img src={self.getImageURL(v.videoId)}/>
 									</a>
 								</li>
 								
@@ -39,7 +40,8 @@ var VideoThumbnailList = React.createClass({
 	},
 
 	play: function(index) {
-		Actions.play(this.props.videos[index].id);
+		console.log('play: ' + index);
+		Actions.play(this.props.videos[index].videoId);
   	},
 
 	getImageURL: function(videoId) {
