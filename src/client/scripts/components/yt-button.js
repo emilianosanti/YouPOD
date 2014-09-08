@@ -6,7 +6,7 @@ var YTButton = React.createClass({
 	render: function() {
 		var self = this;
 		return (
-				<button onClick={self.handleClick} className = "yt--button" id="buttonid">nuevo 
+				<button onClick={self.handleClick} className = "yt--button" id="buttonid"> +
 				 {this.props.children}
 				 </button>
 			)

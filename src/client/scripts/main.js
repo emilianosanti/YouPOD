@@ -5,7 +5,6 @@ var ReactYoutubePlayer = require("./components/player.js");
 
 
 var YTContainer = require('./components/yt-container.js');
-var YTForm = require('./components/yt-form.js');
 var YTInput = require('./components/yt-input.js');
 var YTIframe = require('./components/yt-iframe.js');
 var YTButton = require('./components/yt-button.js');
