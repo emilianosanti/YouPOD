@@ -3,6 +3,7 @@
 var React = require("react");
 var Flux = require('delorean.js').Flux;
 var $ = require('jquery');
+var Actions = require('./actions/actions');
 
 var ReactYoutubePlayer = require("./components/player.js");
 var YTContainer = require('./components/yt-container.js');
@@ -20,6 +21,7 @@ var App = React.createClass({
 	getInitialState: function() {
     	return {
     		videolist: [],
+        url: '',
     		currentlyPlayingVideo: undefined
     	};
   	},
@@ -34,16 +36,15 @@ var App = React.createClass({
   		console.log('App - render: ' + JSON.stringify(this.state));
   		return (
 	  		<YTContainer>
-					<YTInput>
-					</YTInput>
-					<YTButton>
-					</YTButton>
-				<YTIframe>
-					<ReactYoutubePlayer 
+					<YTInput onChange={this.onUrlChange} value={this.state.url} />
+					<YTButton onClick={this.handleAddUrl}/>
+  				<YTIframe>
+  					<ReactYoutubePlayer 
 						id={this.state.currentlyPlayingVideo?this.state.currentlyPlayingVideo.id:undefined}
-						height={this.calculatePlayerHeight()} 
-						width={this.calculatePlayerWidth()}/>
-				</YTIframe>
+  						url={this.currentlyPlayingURL()}
+  						height={this.calculatePlayerHeight()} 
+  						width={this.calculatePlayerWidth()}/>
+  				</YTIframe>
 				<YTIframe>
 					<VideoThumbnailList videos={this.state.videolist}/>
 				</YTIframe>
@@ -79,7 +80,24 @@ var App = React.createClass({
 
 	calculatePlayerHeight: function() {
 		return '' + (screen.height - ((screen.height * 45) / 100));
-	}
+	},
+
+  onUrlChange: function(e) {
+    this.setState({url: e.target.value});
+  },
+
+  getVideoId: function(url) {
+    var regex = /(youtu\.be\/|youtube\.com\/(watch\?(.*&)?v=|(embed|v)\/))([^\?&"'>]+)/;
+    if (url) return url.match(regex)[5];
+  },
+
+  handleAddUrl: function () {  
+      var vurl = this.state.url;
+      var videoId = this.getVideoId(vurl);
+      console.log(videoId);
+      Actions.addVideo({id: videoId, title: "Title", playing: false}); 
+    }
 });
 
 module.exports = App;
+
