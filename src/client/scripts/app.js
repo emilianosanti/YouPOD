@@ -7,7 +7,6 @@ var Actions = require('./actions/actions');
 
 var ReactYoutubePlayer = require("./components/player.js");
 var YTContainer = require('./components/yt-container.js');
-var YTForm = require('./components/yt-form.js');
 var YTInput = require('./components/yt-input.js');
 var YTIframe = require('./components/yt-iframe.js');
 var YTButton = require('./components/yt-button.js');
@@ -43,11 +42,10 @@ var App = React.createClass({
 						id={this.state.currentlyPlayingVideo?this.state.currentlyPlayingVideo.id:undefined}
   						url={this.currentlyPlayingURL()}
   						height={this.calculatePlayerHeight()} 
-  						width={this.calculatePlayerWidth()}/>
+						width={this.calculatePlayerWidth()}
+            ended={this._handleEnd}/>
   				</YTIframe>
-				<YTIframe>
 					<VideoThumbnailList videos={this.state.videolist}/>
-				</YTIframe>
 			</YTContainer>
 		)
   	},
@@ -62,21 +60,17 @@ var App = React.createClass({
   	},
 
   	currentlyPlayingURL: function() {
-  		var currentlyPlayingVideo = this.stores.videoList.store.getAll().filter(
-  				function(video) {
-  					return video.playing;
-  				}
-  			);
+  		var currentlyPlayingVideo = this.stores.videoList.store.currentlyPlaying();
 
   		if (currentlyPlayingVideo.length > 0)
-  			return 'http://www.youtube.com/watch?v=' + currentlyPlayingVideo[0].id;
+  			return 'http://www.youtube.com/watch?v=' + currentlyPlayingVideo.id;
   		else
   			return undefined;
   	},
 
   	calculatePlayerWidth: function() {
-		return '' + (screen.availWidth - ((screen.availWidth * 20) / 100));
-	},
+		  return '' + (screen.availWidth - ((screen.availWidth * 20) / 100));
+    },
 
 	calculatePlayerHeight: function() {
 		return '' + (screen.height - ((screen.height * 45) / 100));
@@ -96,7 +90,7 @@ var App = React.createClass({
       var videoId = this.getVideoId(vurl);
       console.log(videoId);
       Actions.addVideo({id: videoId, title: "Title", playing: false}); 
-    }
+  }
 });
 
 module.exports = App;

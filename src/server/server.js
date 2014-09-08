@@ -32,11 +32,11 @@ router.route('/videolist')
 	.get(function(req, res){
 		var _videos = [];
 		_videos.push(
-	      {videoId: "qlBYcR60npU", title: "Title", playing: false},
-	      {videoId: "pT9RxINEbeU", title: "Title", playing: false},
-	      {videoId: "n3o2ERbw0aY", title: "Title", playing: false},
-	      {videoId: "NAOeJEVX9Bk", title: "Title", playing: false},
-	      {videoId: "LDEhk8th4eI", title: "Title", playing: false}
+	      {videoId: "qlBYcR60npU", title: "Title", playing: false, nextVideoId: "pT9RxINEbeU"},
+	      {videoId: "pT9RxINEbeU", title: "Title", playing: false, nextVideoId: "n3o2ERbw0aY"},
+	      {videoId: "n3o2ERbw0aY", title: "Title", playing: false, nextVideoId: "NAOeJEVX9Bk"},
+	      {videoId: "NAOeJEVX9Bk", title: "Title", playing: false, nextVideoId: "LDEhk8th4eI"},
+	      {videoId: "LDEhk8th4eI", title: "Title", playing: false, nextVideoId: undefined}
 	      );
 
 		res.json(_videos);
