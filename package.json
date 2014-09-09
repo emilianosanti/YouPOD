@@ -29,7 +29,9 @@
     "gulp-rename": "1.2.0",
     "vinyl-source-stream": "0.1.1",
     "events": "^1.0.2",
-    "gulp-express": "0.0.9"
+    "gulp-express": "0.0.9",
+    "gulp-zip": "^2.0.1",
+    "run-sequence": "^0.3.6"
   },
   "dependencies": {
     "react-tools": "~0.11.1",
