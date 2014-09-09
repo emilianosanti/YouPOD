@@ -35,7 +35,7 @@ var App = React.createClass({
   		console.log('App - render: ' + JSON.stringify(this.state));
   		return (
 	  		<YTContainer>
-					<YTInput onChange={this.onUrlChange} value={this.state.url} />
+					<YTInput onKeyPress={this.enterKey} onChange={this.onUrlChange} value={this.state.url} />
 					<YTButton onClick={this.handleAddUrl}/>
   				<YTIframe>
   					<ReactYoutubePlayer 
@@ -49,8 +49,7 @@ var App = React.createClass({
 			</YTContainer>
 		)
   	},
-
-  	storeDidChange: function (storeName) {
+    	storeDidChange: function (storeName) {
   		console.log('App - storeDidChange: ');
 
   		this.setState({
@@ -76,6 +75,13 @@ var App = React.createClass({
 		return '' + (screen.height - ((screen.height * 45) / 100));
 	},
 
+  enterKey: function(e) {
+    var key = e.which;
+       if (key == 13){ 
+          this.handleAddUrl();
+        }
+     },
+
   onUrlChange: function(e) {
     this.setState({url: e.target.value});
   },
@@ -89,7 +95,8 @@ var App = React.createClass({
       var vurl = this.state.url;
       var videoId = this.getVideoId(vurl);
       console.log(videoId);
-      Actions.addVideo({id: videoId, title: "Title", playing: false}); 
+      Actions.addVideo({videoId: videoId, title: "Title", playing: false}); 
+      this.setState({url: ""});
   }
 });
 
