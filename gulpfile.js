@@ -8,9 +8,14 @@ var del = require('del');
 var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
 var server = require('gulp-express');
+var zip = require('gulp-zip');
+var runSequence = require('run-sequence');
 
-var BUILD_CLIENT_ROOT = 'build/client';
-var BUILD_SERVER_ROOT = 'build/server';
+var DIST_ROOT = 'dist/';
+
+var BUILD_ROOT = 'build/';
+var BUILD_CLIENT_ROOT = BUILD_ROOT + 'client';
+var BUILD_SERVER_ROOT = BUILD_ROOT + 'server';
 
 var CLIENT_ROOT = './src/client';
 var CLIENT_ROOT_SCRIPTS = CLIENT_ROOT + '/scripts';
@@ -19,10 +24,10 @@ var CLIENT_ROOT_IMAGES = CLIENT_ROOT + '/images';
 
 var SERVER_ROOT = './src/server';
 
+var version = require("./package.json").version;
+
 gulp.task('clean', function(cb) {
-    del(['build'], cb);
-    
-    notify({ message: 'Deleting build folder complete' });
+    del([BUILD_ROOT, DIST_ROOT], cb);
 });
 
 gulp.task('styles', function() {
@@ -74,10 +79,34 @@ gulp.task('server', ['build-server'], function () {
     gulp.watch([SERVER_ROOT + '/*.js'], server.notify);
 });
 
-gulp.task('build', ['styles', 'scripts', 'markup', 'images'])
+gulp.task('zip', function() {
+    var fileName = 'youpod-' + version + '.zip';
 
-gulp.task('default', ['build', 'server'], function () {
-    gulp.watch('src/styles/**/*', ['styles', browserSync.reload]);
-    gulp.watch('src/scripts/**/*', ['scripts', browserSync.reload]);
-    gulp.watch('src/index.html', ['markup', browserSync.reload]);
+    return gulp.src([BUILD_ROOT + '/**/*'])
+        .pipe(zip(fileName))
+        .pipe(gulp.dest('./dist/'));
+});
+
+//gulp.task('build', ['styles', 'scripts', 'markup', 'images']);
+
+gulp.task('release', function(callback) {
+  runSequence('build',
+              ['zip'],
+              callback);
+});
+
+gulp.task('build', function(callback) {
+  runSequence('clean',
+              ['styles', 'scripts', 'markup', 'images', 'build-server'],
+              callback);
+});
+
+gulp.task('default', function(callback) {
+  runSequence('build',
+              ['server'],
+              function () {
+                gulp.watch('src/styles/**/*', ['styles', server.notify]);
+                gulp.watch('src/scripts/**/*', ['scripts', server.notify]);
+                gulp.watch('src/index.html', ['markup', server.notify]);
+            });
 });
