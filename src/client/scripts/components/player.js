@@ -4,6 +4,7 @@ var React = require("react");
 var Flux = require('delorean.js').Flux;
 var sdk = require("require-sdk")("https://www.youtube.com/iframe_api", "YT");
 var loadTrigger = sdk.trigger();
+var varPlay = undefined;
 
 // YT API requires global ready event handler
 window.onYouTubeIframeAPIReady = function () {
@@ -91,13 +92,14 @@ var ReactYoutubePlayer = React.createClass({
 
   	storeDidChange: function (storeName) {
   		console.log('Player - storeDidChange: ');
-
     	var currentlyPlaying = this.stores.videoList.store.currentlyPlaying().videoId;
-    	
-    	if (currentlyPlaying) {
-    		if (this.state.player)
+    	console.log("currentlyIdPlaying" + currentlyPlaying);
+
+    	if(varPlay != currentlyPlaying) {
+    		if(currentlyPlaying)
   				this.state.player.loadVideoById(currentlyPlaying);
-  		}
+  				varPlay = currentlyPlaying;
+  	    }
   	},
 
   	/**
