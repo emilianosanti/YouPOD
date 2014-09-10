@@ -50,15 +50,6 @@ gulp.task('markup', function() {
         .pipe(gulp.dest(BUILD_CLIENT_ROOT + '/'));
 });
 
-gulp.task('browser-sync', function() {
-    browserSync({
-        server: {
-            baseDir: BUILD_CLIENT_ROOT,
-            port: 4001
-        }
-    });
-});
-
 gulp.task('build-server', function() {
     return gulp.src([SERVER_ROOT + '/server.js'])
         .pipe(gulp.dest(BUILD_SERVER_ROOT + '/'));
@@ -79,15 +70,23 @@ gulp.task('server', ['build-server'], function () {
     gulp.watch([SERVER_ROOT + '/*.js'], server.notify);
 });
 
-gulp.task('zip', function() {
-    var fileName = 'youpod-' + version + '.zip';
-
-    return gulp.src([BUILD_ROOT + '/**/*'])
+gulp.task('zip-client', function() {
+    var fileName = 'youpod-' + version + '-client.zip';
+    
+    return gulp.src([BUILD_CLIENT_ROOT + '/**/*'])
         .pipe(zip(fileName))
         .pipe(gulp.dest('./dist/'));
 });
 
-//gulp.task('build', ['styles', 'scripts', 'markup', 'images']);
+gulp.task('zip-server', function() {
+    var fileName = 'youpod-' + version + '-api.zip';
+
+    return gulp.src([BUILD_SERVER_ROOT + '/**/*'])
+        .pipe(zip(fileName))
+        .pipe(gulp.dest('./dist/'));
+});
+
+gulp.task('zip', ['zip-client', 'zip-server']);
 
 gulp.task('release', function(callback) {
   runSequence('build',

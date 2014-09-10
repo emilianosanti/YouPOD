@@ -15,7 +15,7 @@ var Actions = {
   	},
 
   	retrieveVideoList: function() {
-  		$.get('http://localhost:4001/api/videolist', function(result) {
+  		$.get('/api/videolist', function(result) {
   			console.log(result);
   			VideoDispatcher.addAll(result);
   		})
