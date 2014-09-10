@@ -21,7 +21,7 @@ var App = React.createClass({
     	return {
     		videolist: [],
         url: '',
-    		currentlyPlayingVideo: undefined
+    		currentlyPlayingVideo: {videoId: '', title: '', playing: false, nextVideoId: ''}
     	};
   	},
 
@@ -39,7 +39,7 @@ var App = React.createClass({
 					<YTButton onClick={this.handleAddUrl}/>
   				<YTIframe>
   					<ReactYoutubePlayer 
-						id={this.state.currentlyPlayingVideo?this.state.currentlyPlayingVideo.id:undefined}
+						  videoId={this.state.currentlyPlayingVideo.videoId}
   						url={this.currentlyPlayingURL()}
   						height={this.calculatePlayerHeight()} 
 						width={this.calculatePlayerWidth()}

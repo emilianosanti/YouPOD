@@ -3,7 +3,10 @@ var $ = require('jquery');
 
 var Actions = {
   	addVideo: function (video) {
-    	VideoDispatcher.addVideo(video);
+      $.post('/api/videos', {'video':video}, function() {
+        console.log('Video added: ' + JSON.stringify(video));
+        VideoDispatcher.addVideo(video);  
+      });    	
   	},
 
     deleteVideo: function (video) {
@@ -15,9 +18,9 @@ var Actions = {
   	},
 
   	retrieveVideoList: function() {
-  		$.get('/api/videolist', function(result) {
-  			console.log(result);
-  			VideoDispatcher.addAll(result);
+  		$.get('/api/videos', function(videos) {
+  			console.log(videos);
+  			VideoDispatcher.addAll(videos);
   		})
   		.fail(function(){
   			console.log('Request for videoList failed');
