@@ -17,8 +17,10 @@ if (isDevEnvironment) {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+	console.log(req.protocol + '://' + req.get('host') + req.originalUrl);
+	
+  	res.header("Access-Control-Allow-Origin", "*");
+  	res.header("Access-Control-Allow-Headers", "X-Requested-With");
   next();
 });
 
