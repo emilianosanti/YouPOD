@@ -6,6 +6,8 @@ var Flux = require('delorean.js').Flux;
 var VideoListStore = require('../stores/video-list-store');
 var Actions = require('../actions/actions');
 
+var $ = require('jquery');
+
 var VideoThumbnailList = React.createClass({
 	mixins: [Flux.mixins.storeListener],
 
@@ -16,27 +18,27 @@ var VideoThumbnailList = React.createClass({
 	render: function() {
 		var self = this;
 		
-		return 	( 
-				<ul className="yt--videoThumbnailList">
-				{
-					this.props.videos.map(
-	
-						function(v, i) {
-							return (
-								<li key={v.videoId}  
-									className="yt--videoThumbnail">
-									<a href="#" onClick={self.play.bind(self, i)}>
-										<img src={self.getImageURL(v.videoId)}/>
-									</a>
-								</li>
-								
-							);
-						}
-	
-					)
-				}
-				</ul> 
-				);
+		return 	(
+		<div className="yt--thumbnail-container">
+				<span className="yt--thumbnail-span">CHECKOUT THE PLAYLIST</span>
+					<ul className="yt--videoThumbnailList" id="yt--video-thumbnail">
+					{
+						this.props.videos.map(
+									function(v, i) {
+								return (
+									<li key={v.videoId}  
+										className="yt--videoThumbnail">
+										<a href="#" onClick={self.play.bind(self, i)}>
+											<img src={self.getImageURL(v.videoId)}/>
+										</a>
+									</li>
+								);
+							}
+						)
+					}
+					</ul>
+		</div> 
+		);
 	},
 
 	play: function(index) {
