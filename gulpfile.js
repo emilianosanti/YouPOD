@@ -50,15 +50,6 @@ gulp.task('markup', function() {
         .pipe(gulp.dest(BUILD_CLIENT_ROOT + '/'));
 });
 
-gulp.task('browser-sync', function() {
-    browserSync({
-        server: {
-            baseDir: BUILD_CLIENT_ROOT,
-            port: 4001
-        }
-    });
-});
-
 gulp.task('build-server', function() {
     return gulp.src([SERVER_ROOT + '/server.js'])
         .pipe(gulp.dest(BUILD_SERVER_ROOT + '/'));

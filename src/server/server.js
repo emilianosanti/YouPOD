@@ -2,26 +2,31 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 
-var port = process.env.PORT || 4001;
-var CLIENT_ROOT = '/home/developer/work/learn-js/build/client'
+var port = process.env.PORT;
+var isDevEnvironment = process.env.DEVELOPMENT == 'true';
+console.log(isDevEnvironment);
 
-// configure app to use bodyParser()
-// this will let us get the data from a POST
-console.log(CLIENT_ROOT);
-app.use(express.static(CLIENT_ROOT));
+if (isDevEnvironment) {
+	var CLIENT_ROOT = '/home/developer/work/learn-js/build/client'
+	console.log(CLIENT_ROOT);
+	app.use(express.static(CLIENT_ROOT));
+} else {
+	console.log('Running in PRODUCTION: ' + __dirname);
+}
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Headers", "X-Requested-With");
-      next();
-    });
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 
 
 var router = express.Router();
 
 router.get('/', function(req, res) {
-	res.json({ message: 'hooray! welcome to our api!' });	
+	res.json({ message: 'Welcome to our YouPOD api!'});	
 });
 
 router.route('/videolist')
