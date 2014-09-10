@@ -48,7 +48,13 @@ var App = React.createClass({
 					<VideoThumbnailList videos={this.state.videolist}/>
 			</YTContainer>
 		)
-  	},
+    },  
+
+    _handleEnd: function() {
+        console.log(this.state.currentlyPlayingVideo.nextVideoId);
+        Actions.play(this.state.currentlyPlayingVideo.nextVideoId);
+    },
+  
     	storeDidChange: function (storeName) {
   		console.log('App - storeDidChange: ');
 
@@ -78,7 +84,9 @@ var App = React.createClass({
   enterKey: function(e) {
     var key = e.which;
        if (key == 13){ 
-          this.handleAddUrl();
+          if(this.state.url != ""){
+            this.handleAddUrl();
+          }
         }
      },
 
@@ -92,11 +100,13 @@ var App = React.createClass({
   },
 
   handleAddUrl: function () {  
-      var vurl = this.state.url;
-      var videoId = this.getVideoId(vurl);
-      console.log(videoId);
-      Actions.addVideo({videoId: videoId, title: "Title", playing: false}); 
-      this.setState({url: ""});
+    if(this.state.url != "") {
+        var vurl = this.state.url;
+        var videoId = this.getVideoId(vurl);
+        console.log(videoId);
+        Actions.addVideo({videoId: videoId, title: "Title", playing: false}); 
+        this.setState({url: ""});
+    }
   }
 });
 
