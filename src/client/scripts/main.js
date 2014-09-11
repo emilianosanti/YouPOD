@@ -13,14 +13,6 @@ var VideoDispatcher = require('./dispatcher/dispatcher');
 
 var App = require('./app');
 
-var _videos = [
-		{id: "qlBYcR60npU", title: "Title", playing: false},
-      	{id: "pT9RxINEbeU", title: "Title", playing: false},
-      	{id: "n3o2ERbw0aY", title: "Title", playing: false},
-      	{id: "NAOeJEVX9Bk", title: "Title", playing: false},
-      	{id: "LDEhk8th4eI", title: "Title", playing: false}
-	]
-
 React.renderComponent(
 	<App dispatcher={VideoDispatcher} />, document.getElementById('main')
 );

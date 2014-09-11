@@ -42,9 +42,10 @@ router.route('/videos')
 			_videos.push({videoId : video.videoId, title: video.title, playing: shouldPlay, nextVideoId: ''});
 
 			if (_videos.length > 1)
-				_videos[_videos.length - 1].nextVideoId = video.videoId;
+				_videos[_videos.length - 2].nextVideoId = video.videoId;
 
-			res.json({message: 'Video added: ' + JSON.stringify(video)});	
+			console.log(JSON.stringify(_videos));
+			res.json({video: _videos[_videos.length - 1]});	
 		}
 	})
 	.get(function(req, res){
