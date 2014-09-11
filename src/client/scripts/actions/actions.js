@@ -3,9 +3,11 @@ var $ = require('jquery');
 
 var Actions = {
   	addVideo: function (video) {
-      $.post('/api/videos', {'video':video}, function() {
-        console.log('Video added: ' + JSON.stringify(video));
-        VideoDispatcher.addVideo(video);  
+      var this_ = this;
+      $.post('/api/videos', {'video':video}, function(result) {
+        console.log('Video added: ' + JSON.stringify(result.video));
+        
+        this_.retrieveVideoList();
       });    	
   	},
 

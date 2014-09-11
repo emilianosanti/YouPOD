@@ -51,7 +51,7 @@ var App = React.createClass({
     },  
 
     _handleEnd: function() {
-        console.log(this.state.currentlyPlayingVideo.nextVideoId);
+        console.log("proximo video a mostrar" + this.state.currentlyPlayingVideo.nextVideoId);
         Actions.play(this.state.currentlyPlayingVideo.nextVideoId);
     },
   
@@ -104,7 +104,7 @@ var App = React.createClass({
         var vurl = this.state.url;
         var videoId = this.getVideoId(vurl);
         console.log(videoId);
-        Actions.addVideo({videoId: videoId, title: "Title", playing: false}); 
+        Actions.addVideo({videoId: videoId, title: "Title", playing: false, nextVideoId: ''}); 
         this.setState({url: ""});
     }
   }

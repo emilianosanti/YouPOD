@@ -4,9 +4,7 @@ var VideoListStore = Flux.createStore({
   _videos: [],
 
   addAll: function(newVideos) {
-    for (var i = 0; i < newVideos.length; i++) {
-      this._videos.push(newVideos[i]);
-    }
+    this._videos.splice.apply(this._videos, [0, newVideos.length].concat(newVideos))
 
     this.emit('change');
   },
