@@ -67,9 +67,9 @@ var ReactYoutubePlayer = React.createClass({
 	    // called once API has loaded.
 	    sdk(function(err, youtube) {
 	    	console.log('Player - Creating youtube player: ' + _this.props.videoId);
-	      var player = new youtube.Player(_this.props.id, 
+	      	var player = new youtube.Player(_this.props.id, 
 	      	{
-	        	videoId: _this.props.videoId,
+	        	videoId: _this.props.videoId == undefined?'':_this.props.videoId,
 	        	height: _this.props.height,
     			width: _this.props.width,
 	        	events: {
@@ -84,7 +84,8 @@ var ReactYoutubePlayer = React.createClass({
 	componentWillUpdate: function(nextProps) {
 		console.log('componentWillUpdate: ' + JSON.stringify(nextProps));
 		if(this.props.videoId !== nextProps.videoId) {
-	    	this.state.player.loadVideoById(nextProps.videoId);
+			if (this.state.player)
+	    		this.state.player.loadVideoById(nextProps.videoId);
 	    }
   	},
 
@@ -93,8 +94,10 @@ var ReactYoutubePlayer = React.createClass({
 
     	var currentlyPlaying = this.stores.videoList.store.currentlyPlaying().videoId;
     	
-    	if (currentlyPlaying)
-  			this.state.player.loadVideoById(currentlyPlaying);
+    	if (currentlyPlaying) {
+    		if (this.state.player)
+  				this.state.player.loadVideoById(currentlyPlaying);
+  		}
   	},
 
   	/**
