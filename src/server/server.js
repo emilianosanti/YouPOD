@@ -6,7 +6,7 @@ var port = process.env.PORT;
 var isDevEnvironment = process.env.DEVELOPMENT == 'true';
 
 if (isDevEnvironment) {
-	var CLIENT_ROOT = '/home/developer/work/learn-js/build/client'
+	var CLIENT_ROOT = '/home/developer/work/learn-js/build'
 	console.log(CLIENT_ROOT);
 	app.use(express.static(CLIENT_ROOT));
 } else {

@@ -3,16 +3,15 @@
 var React = require("react");
 var Flux = require('delorean.js').Flux;
 var $ = require('jquery');
-var Actions = require('./actions/actions');
+var Actions = require('../../common/actions/actions');
 
-var ReactYoutubePlayer = require("./components/player.js");
-var YTContainer = require('./components/yt-container.js');
-var YTInput = require('./components/yt-input.js');
-var YTIframe = require('./components/yt-iframe.js');
-var YTButton = require('./components/yt-button.js');
-var VideoThumbnailList = require('./components/yt-video-thumbnail-list.js');
-var VideoDispatcher = require('./dispatcher/dispatcher');
-var Actions = require('./actions/actions');
+var YTContainer = require('../../common/components/yt-container.js');
+var YTInput = require('../../common/components/yt-input.js');
+var YTIframe = require('../../common/components/yt-iframe.js');
+var YTButton = require('../../common/components/yt-button.js');
+var VideoThumbnailList = require('../../common/components/yt-video-thumbnail-list.js');
+var VideoDispatcher = require('../../common/dispatcher/dispatcher');
+var Actions = require('../../common/actions/actions');
 
 var App = React.createClass({
 	mixins: [Flux.mixins.storeListener],
@@ -37,39 +36,23 @@ var App = React.createClass({
 	  		<YTContainer>
 					<YTInput onKeyPress={this.enterKey} onChange={this.onUrlChange} value={this.state.url} />
 					<YTButton onClick={this.handleAddUrl}/>
-  				<YTIframe>
-  					<ReactYoutubePlayer 
-						  videoId={this.state.currentlyPlayingVideo.videoId}
-  						url={this.currentlyPlayingURL()}
-  						height={this.calculatePlayerHeight()} 
-						width={this.calculatePlayerWidth()}
-            ended={this._handleEnd}/>
-  				</YTIframe>
 					<VideoThumbnailList videos={this.state.videolist}/>
 			</YTContainer>
 		)
     },  
 
     _handleEnd: function() {
-        Actions.play(this.state.currentlyPlayingVideo.nextVideoId);
+        Actions.play(this.stores.videoList.store.getVideo(this.state.currentlyPlayingVideo.nextVideoId));
     },
   
-    	storeDidChange: function (storeName) {
+  	storeDidChange: function (storeName) {
   		console.log('App - storeDidChange: ');
 
   		this.setState({
+        url: '',
   			videolist: this.stores.videoList.store.getAll(),
   			currentlyPlayingVideo: this.stores.videoList.store.currentlyPlaying()
   		});
-  	},
-
-  	currentlyPlayingURL: function() {
-  		var currentlyPlayingVideo = this.stores.videoList.store.currentlyPlaying();
-
-  		if (currentlyPlayingVideo.length > 0)
-  			return 'http://www.youtube.com/watch?v=' + currentlyPlayingVideo.id;
-  		else
-  			return undefined;
   	},
 
   	calculatePlayerWidth: function() {
@@ -104,7 +87,7 @@ var App = React.createClass({
         var videoId = this.getVideoId(vurl);
         console.log(videoId);
         Actions.addVideo({videoId: videoId, title: "Title", playing: false, nextVideoId: ''}); 
-        this.setState({url: ""});
+        // this.setState({url: ""});
     }
   }
 });

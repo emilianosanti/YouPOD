@@ -1,0 +1,131 @@
+.yt--container {
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	width: auto;
+}
+
+.yt--input-url{
+	background-color: #F8F8F8 ; 
+	color: black;
+	font-size: 18px;
+	height: 20px;
+	margin: 0 5px 5px 0;
+	padding: 9px 15px 5px 15px;
+	width: 600px;
+	background-color: rgba(255, 255, 255, 0.5);
+
+	&:hover{
+		border-color: #3183C7;
+	}
+}
+
+
+.yt--button{
+	border: 3px solid #8E4600;
+    background: transparent;
+    height: 40px;
+    width: 40px;
+    color: #000;
+    text-align: center;
+    border-radius: 50%;
+    float: center;
+    font-size: 12px;
+   	background-color: rgba(255, 255, 255, 0.5);
+ 
+
+    &:active {
+    	position:relative;
+		top:1px;
+    }
+
+    &:focus {
+    	outline-style: none;
+    }
+}
+
+.yt--wrapper{
+  background: white;
+  margin: 35px auto;
+  width: 800px;
+  height: 100px;
+  position: relative;
+
+}
+
+.yt--form {
+	width: 100%;
+	background-clip: border-box;
+	background-origin: padding-box;
+	background-size: auto;
+	display: block;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	height: 102px;
+	margin-left: 0px;
+	margin-top: 5px;
+	padding-left: 0px;
+	padding-top: 0px;
+	width: auto;
+}
+
+.yt--iframe {
+	width: auto;
+	clear: both;
+	padding-top: 25px;
+}
+
+.yt--videoThumbnail {
+	display: inline;
+	list-style-type: none;
+	padding-right: 44px;
+}
+
+.yt--videoThumbnailList {
+	float: left;
+	display: inline-block;
+	clear: both;
+	margin-left: 6px;
+	-webkit-transition: 1s; /* For Safari 3.1 to 6.0 */
+     transition: 1s;
+}
+
+.yt--body {
+	background-image: url(../images/ytback.jpg);
+	overflow: auto;
+	overflow-y: hidden;
+}
+
+.yt--thumbnail-container {
+	position: absolute;
+	bottom: 0;
+	width: 700%;
+    height: 30px;
+	background-color: rgba(255, 255, 255, 0.5);
+    -webkit-transition: height 1s;
+    transition: height 1s;
+    position: fixed;
+	overflow-y: hidden;
+	left: 0;
+
+    &:hover {
+        height: 150px;
+    }
+}
+
+.yt--thumbnail-span {
+	font-size: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #D0F8FF;
+	float: left;
+	clear: both;
+	text-align: left;
+	width: 100%;
+	padding-bottom: 7px;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.yt--thumbnail-content {
+	width: 100%;
+}
