@@ -22,6 +22,8 @@ var PLAYLIST_BUILD_ROOT = BUILD_ROOT + 'playlist/';
 var PLAYER_SRC_ROOT = SRC_ROOT + 'player/';
 var PLAYLIST_SRC_ROOT = SRC_ROOT + 'playlist/';
 
+var version = require('./package.json').version;
+
 gulp.task('player-clean', function(cb) {
   del([PLAYER_BUILD_ROOT], cb);
 });
@@ -111,7 +113,7 @@ gulp.task('playlist-build', function(callback) {
               callback);
 });
 
-gulp.task('build', ['styles', 'scripts', 'markup', 'images']);
+gulp.task('build', ['styles', 'scripts', 'markup', 'images', 'build-server']);
 
 gulp.task('browser-sync', function() {
     browserSync({
@@ -134,6 +136,36 @@ gulp.task('server', ['build-server'], function () {
 
     // restart the server when file changes
     gulp.watch([SERVER_ROOT + '/*.js'], server.notify);
+});
+
+gulp.task('zip-player', function() {
+  var filename = 'player-' + version + '.zip';
+
+  return gulp.src(PLAYER_BUILD_ROOT + '**/*')
+        .pipe(zip(filename))
+        .pipe(gulp.dest('./dist'));
+});
+
+gulp.task('zip-playlist', function() {
+  var filename = 'playlist-' + version + '.zip';
+
+  return gulp.src(PLAYLIST_BUILD_ROOT + '**/*')
+        .pipe(zip(filename))
+        .pipe(gulp.dest('./dist'));
+});
+
+gulp.task('zip-server', function() {
+  var filename = 'server-' + version + '.zip';
+
+  return gulp.src(BUILD_ROOT + 'server/*/**')
+        .pipe(zip(filename))
+        .pipe(gulp.dest('./dist'));
+});
+
+gulp.task('zip', ['zip-player', 'zip-playlist', 'zip-server']);
+
+gulp.task('release', function(cb){
+  runSequence('clean', ['build'], 'zip', cb);
 });
 
 gulp.task('default', function(cb) {
