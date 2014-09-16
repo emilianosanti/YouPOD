@@ -5,11 +5,10 @@ var Flux = require('delorean.js').Flux;
 var $ = require('jquery');
 var Actions = require('../../common/actions/actions');
 
-var ReactYoutubePlayer = require("../../common/components/player.js");
+var ReactYoutubePlayer = require("./components/player.js");
 var YTContainer = require('../../common/components/yt-container.js');
 var YTIframe = require('../../common/components/yt-iframe.js');
 var VideoDispatcher = require('../../common/dispatcher/dispatcher');
-var Actions = require('../../common/actions/actions');
 
 var App = React.createClass({
 	mixins: [Flux.mixins.storeListener],

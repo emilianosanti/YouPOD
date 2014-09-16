@@ -9,9 +9,8 @@ var YTContainer = require('../../common/components/yt-container.js');
 var YTInput = require('../../common/components/yt-input.js');
 var YTIframe = require('../../common/components/yt-iframe.js');
 var YTButton = require('../../common/components/yt-button.js');
-var VideoThumbnailList = require('../../common/components/yt-video-thumbnail-list.js');
+var VideoThumbnailList = require('./components/yt-video-thumbnail-list.js');
 var VideoDispatcher = require('../../common/dispatcher/dispatcher');
-var Actions = require('../../common/actions/actions');
 
 var App = React.createClass({
 	mixins: [Flux.mixins.storeListener],
