@@ -3,8 +3,8 @@
 var React = require("react");
 var Flux = require('delorean.js').Flux;
 
-var VideoListStore = require('../stores/video-list-store');
-var Actions = require('../actions/actions');
+var VideoListStore = require('../../../common/stores/video-list-store');
+var Actions = require('../../../common/actions/actions');
 
 var VideoThumbnailList = React.createClass({
 	mixins: [Flux.mixins.storeListener],
