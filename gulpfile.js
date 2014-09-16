@@ -11,101 +11,135 @@ var server = require('gulp-express');
 var zip = require('gulp-zip');
 var runSequence = require('run-sequence');
 
-var DIST_ROOT = 'dist/';
+var DIST_ROOT = './dist/';
+var BUILD_ROOT = './build/';
+var SRC_ROOT = './src/client/';
+var SERVER_ROOT = './src/server/';
 
-var BUILD_ROOT = 'build/';
-var BUILD_CLIENT_ROOT = BUILD_ROOT + 'client';
-var BUILD_SERVER_ROOT = BUILD_ROOT + 'server';
+var PLAYER_BUILD_ROOT = BUILD_ROOT + 'player/';
+var PLAYLIST_BUILD_ROOT = BUILD_ROOT + 'playlist/';
 
-var CLIENT_ROOT = './src/client';
-var CLIENT_ROOT_SCRIPTS = CLIENT_ROOT + '/scripts';
-var CLIENT_ROOT_STYLES = CLIENT_ROOT + '/styles';
-var CLIENT_ROOT_IMAGES = CLIENT_ROOT + '/images';
+var PLAYER_SRC_ROOT = SRC_ROOT + 'player/';
+var PLAYLIST_SRC_ROOT = SRC_ROOT + 'playlist/';
 
-var SERVER_ROOT = './src/server';
-
-var version = require("./package.json").version;
-
-gulp.task('clean', function(cb) {
-    del([BUILD_ROOT, DIST_ROOT], cb);
+gulp.task('player-clean', function(cb) {
+  del([PLAYER_BUILD_ROOT], cb);
 });
 
-gulp.task('styles', function() {
-	return gulp.src([CLIENT_ROOT_STYLES + '/main.scss'])
-		.pipe(sass())
-		.pipe(gulp.dest(BUILD_CLIENT_ROOT + '/css/'));
+gulp.task('playlist-clean', function(cb) {
+  del([PLAYLIST_BUILD_ROOT], cb);
 });
 
-gulp.task('scripts', function () {
-  var bundler = browserify(CLIENT_ROOT_SCRIPTS + '/main.js', {basedir: __dirname}).transform(reactify);
+gulp.task('clean', ['player-clean', 'playlist-clean']);
+
+// STYLES
+gulp.task('player-styles', function() {
+  return gulp.src([PLAYER_SRC_ROOT + 'styles/main.scss'])
+    .pipe(sass())
+    .pipe(gulp.dest(PLAYER_BUILD_ROOT + '/css/'));
+});
+
+gulp.task('playlist-styles', function() {
+  return gulp.src([PLAYLIST_SRC_ROOT + 'styles/main.scss'])
+    .pipe(sass())
+    .pipe(gulp.dest(PLAYLIST_BUILD_ROOT + '/css/'));
+});
+
+gulp.task('styles', ['player-styles', 'playlist-styles']);
+
+// SCRIPTS
+gulp.task('player-scripts', function () {
+  var bundler = browserify(PLAYER_SRC_ROOT + 'scripts/main.js', {basedir: __dirname}).transform(reactify);
   var stream = bundler.bundle();
 
   return stream
     .pipe(source('main.js'))
-    .pipe(gulp.dest(BUILD_CLIENT_ROOT + '/scripts/'));
+    .pipe(gulp.dest(PLAYER_BUILD_ROOT + '/scripts/'));
 });
 
-gulp.task('markup', function() {
-    return gulp.src ([CLIENT_ROOT + '/index.html'])
-        .pipe(gulp.dest(BUILD_CLIENT_ROOT + '/'));
+gulp.task('playlist-scripts', function () {
+  var bundler = browserify(PLAYLIST_SRC_ROOT + 'scripts/main.js', {basedir: __dirname}).transform(reactify);
+  var stream = bundler.bundle();
+
+  return stream
+    .pipe(source('main.js'))
+    .pipe(gulp.dest(PLAYLIST_BUILD_ROOT + '/scripts/'));
+});
+
+gulp.task('scripts', ['player-scripts', 'playlist-scripts']);
+
+// MARKUP
+gulp.task('player-markup', function() {
+    return gulp.src ([PLAYER_SRC_ROOT + 'index.html'])
+        .pipe(gulp.dest(PLAYER_BUILD_ROOT));
+});
+
+gulp.task('playlist-markup', function() {
+    return gulp.src ([PLAYLIST_SRC_ROOT + 'index.html'])
+        .pipe(gulp.dest(PLAYLIST_BUILD_ROOT));
+});
+
+gulp.task('markup', ['player-markup', 'playlist-markup'], function() {
+  return gulp.src ([SRC_ROOT + 'index.html'])
+        .pipe(gulp.dest(BUILD_ROOT));
+});
+
+//IMAGES
+
+gulp.task('player-images', function() {
+    return gulp.src ([PLAYER_SRC_ROOT + 'images/*'])
+        .pipe(gulp.dest(PLAYER_BUILD_ROOT + '/images/'));
+});
+
+gulp.task('playlist-images', function() {
+    return gulp.src ([PLAYLIST_SRC_ROOT + 'images/*'])
+        .pipe(gulp.dest(PLAYLIST_BUILD_ROOT + '/images/'));
+});
+
+gulp.task('images', ['player-images', 'playlist-images']);
+
+// BUILD
+gulp.task('player-build', function(callback) {
+  runSequence('player-clean',
+              ['player-styles', 'player-scripts', 'player-markup', 'player-images'],
+              callback);
+});
+
+gulp.task('playlist-build', function(callback) {
+  runSequence('playlist-clean',
+              ['playlist-styles', 'playlist-scripts', 'playlist-markup', 'playlist-images'],
+              callback);
+});
+
+gulp.task('build', ['styles', 'scripts', 'markup', 'images']);
+
+gulp.task('browser-sync', function() {
+    browserSync({
+        server: {
+            baseDir: BUILD_ROOT
+        }
+    });
 });
 
 gulp.task('build-server', function() {
     return gulp.src([SERVER_ROOT + '/server.js'])
-        .pipe(gulp.dest(BUILD_SERVER_ROOT + '/'));
-});
-
-gulp.task('images', function() {
-    return gulp.src ([CLIENT_ROOT_IMAGES + '/*'])
-        .pipe(gulp.dest(BUILD_CLIENT_ROOT + '/css/images/'));
+        .pipe(gulp.dest(BUILD_ROOT + 'server/'));
 });
 
 gulp.task('server', ['build-server'], function () {
-    //start the server at the beginning of the task
+    // start the server at the beginning of the task
     server.run({
-        file: BUILD_SERVER_ROOT + '/server.js'
+        file: BUILD_ROOT + 'server/server.js'
     });
 
-    //restart the server when file changes
+    // restart the server when file changes
     gulp.watch([SERVER_ROOT + '/*.js'], server.notify);
 });
 
-gulp.task('zip-client', function() {
-    var fileName = 'youpod-' + version + '-client.zip';
-    
-    return gulp.src([BUILD_CLIENT_ROOT + '/**/*'])
-        .pipe(zip(fileName))
-        .pipe(gulp.dest('./dist/'));
-});
-
-gulp.task('zip-server', function() {
-    var fileName = 'youpod-' + version + '-api.zip';
-
-    return gulp.src([BUILD_SERVER_ROOT + '/**/*'])
-        .pipe(zip(fileName))
-        .pipe(gulp.dest('./dist/'));
-});
-
-gulp.task('zip', ['zip-client', 'zip-server']);
-
-gulp.task('release', function(callback) {
-  runSequence('build',
-              ['zip'],
-              callback);
-});
-
-gulp.task('build', function(callback) {
+gulp.task('default', function(cb) {
   runSequence('clean',
-              ['styles', 'scripts', 'markup', 'images', 'build-server'],
-              callback);
+              ['build'],
+              'server',
+              cb);
 });
 
-gulp.task('default', function(callback) {
-  runSequence('build',
-              ['server'],
-              function () {
-                gulp.watch('src/styles/**/*', ['styles', server.notify]);
-                gulp.watch('src/scripts/**/*', ['scripts', server.notify]);
-                gulp.watch('src/index.html', ['markup', server.notify]);
-            });
-});
