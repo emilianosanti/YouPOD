@@ -3,19 +3,21 @@
 var React = require("react");
 var Flux = require('delorean.js').Flux;
 var $ = require('jquery');
-var Actions = require('../../common/actions/actions');
+var Actions = require('../../player/scripts/actions/actions');
 
 var ReactYoutubePlayer = require("./components/player.js");
 var YTContainer = require('../../common/components/yt-container.js');
 var YTIframe = require('../../common/components/yt-iframe.js');
-var VideoDispatcher = require('../../common/dispatcher/dispatcher');
+var VideoDispatcher = require('../../player/scripts/dispatcher/dispatcher');
+
+var $ = require('jquery');
 
 var App = React.createClass({
 	mixins: [Flux.mixins.storeListener],
 
 	getInitialState: function() {
     	return {
-    		videolist: [],
+    		video: [],
         url: '',
     		currentlyPlayingVideo: {videoId: '', title: '', playing: false, nextVideoId: ''}
     	};
@@ -24,7 +26,7 @@ var App = React.createClass({
   	componentDidMount: function() {
   		console.log('App - componentDidMount');
 
-  		Actions.retrieveVideoList();
+  		Actions.getCurrentlyPlayingVideo();
   	},
 
   	render: function() {
@@ -43,16 +45,21 @@ var App = React.createClass({
     },  
 
     _handleEnd: function() {
-        Actions.play(this.stores.videoList.store.getVideo(this.state.currentlyPlayingVideo.nextVideoId));
+
+        $.get('/api/next', function(video) {
+            
+            Actions.play(video);
+        });
     },
   
   	storeDidChange: function (storeName) {
   		console.log('App - storeDidChange: ');
 
+      console.log(this.stores.video.store.getVideo());
+
   		this.setState({
-        url: '',
-  			videolist: this.stores.videoList.store.getAll(),
-  			currentlyPlayingVideo: this.stores.videoList.store.currentlyPlaying()
+  			video: this.stores.video.store.getVideo(),
+        currentlyPlayingVideo: this.stores.video.store.getVideo()
   		});
   	},
 

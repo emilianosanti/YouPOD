@@ -2,7 +2,7 @@
 
 var React = require("react");
 
-var VideoDispatcher = require('../../common/dispatcher/dispatcher');
+var VideoDispatcher = require('../../player/scripts/dispatcher/dispatcher');
 
 var App = require('./app');
 
