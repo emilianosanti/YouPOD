@@ -2,15 +2,13 @@
 
 var React = require("react");
 var Flux = require('delorean.js').Flux;
-var $ = require('jquery');
-var Actions = require('../../common/actions/actions');
+
+var Actions = require('./actions/actions');
+var VideoDispatcher = require('./dispatcher/dispatcher');
 
 var YTContainer = require('../../common/components/yt-container.js');
-var YTInput = require('../../common/components/yt-input.js');
 var YTIframe = require('../../common/components/yt-iframe.js');
-var YTButton = require('../../common/components/yt-button.js');
 var VideoThumbnailList = require('./components/yt-video-thumbnail-list.js');
-var VideoDispatcher = require('../../common/dispatcher/dispatcher');
 
 var App = React.createClass({
 	mixins: [Flux.mixins.storeListener],
@@ -77,18 +75,18 @@ var App = React.createClass({
       this.setState({url: e.target.value});
     },
 
-    getVideoId: function(url) {
-      var regex = /(youtu\.be\/|youtube\.com\/(watch\?(.*&)?v=|(embed|v)\/))([^\?&"'>]+)/;
-      if (url) return url.match(regex)[5];
-    },
-
     handleAddUrl: function () {  
       if(this.state.url != "") {
           var videoId = this.getVideoId(this.state.url);
 
           Actions.addVideo({videoId: videoId, title: "Title", playing: false, nextVideoId: ''}); 
       }
-    }
+    },
+
+    getVideoId: function(url) {
+      var regex = /(youtu\.be\/|youtube\.com\/(watch\?(.*&)?v=|(embed|v)\/))([^\?&"'>]+)/;
+      if (url) return url.match(regex)[5];
+    },
 });
 
 module.exports = App;

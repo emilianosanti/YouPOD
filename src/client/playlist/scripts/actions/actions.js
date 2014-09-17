@@ -4,10 +4,13 @@ var $ = require('jquery');
 var Actions = {
   	addVideo: function (video) {
       var this_ = this;
+
       $.post('/api/videos', {'video':video}, function(result) {
         console.log('Video added: ' + JSON.stringify(result.video));
         
         this_.retrieveVideoList();
+      }).fail(function(){
+        console.log('Request for AddVideo failed');
       });    	
   	},
 

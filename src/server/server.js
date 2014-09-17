@@ -1,3 +1,4 @@
+require('array.prototype.findindex');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -25,7 +26,7 @@ app.use(function(req, res, next) {
 
 
 var router = express.Router();
-var _videos = [];
+var _videos = new Array();
 
 router.get('/', function(req, res) {
 	res.json({ message: 'Welcome to our YouPOD api!'});	
@@ -33,26 +34,24 @@ router.get('/', function(req, res) {
 
 router.route('/next')
 	.get(function(req, res) {
+		var next = undefined;
+		console.log(JSON.stringify(_videos));
+		if (_videos.length > 0) {
+			var playingVideoIndex = _videos.findIndex(
+      		function(video, index, array){
+        		return video.playing;
+      		});
 
-	var next = undefined;
+			_videos = _videos.slice(playingVideoIndex+1);
 
-	for(var idx in _videos) {
+			if (_videos.length > 0) {
+				_videos[0].playing = true; // it will be always the first
 
-		if(_videos[idx].playing) {
-
-
-			console.log(idx);
-
-			_videos[idx].playing = false;
-			next = _videos[(++idx)];
-
-			console.log(idx);
-			
-			_videos[idx].playing = true;
-			break;
+				res.json(_videos[0]);
+			}
+		} else {
+			res.json({videoId: '', title: '', playing: false, nextVideoId: ''})
 		}
-	}
-	res.json(next);
 });
 
 router.route('/videos')
