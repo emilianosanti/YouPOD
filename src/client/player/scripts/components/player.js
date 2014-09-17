@@ -62,7 +62,8 @@ var ReactYoutubePlayer = React.createClass({
 	        	height: _this.props.height,
     			width: _this.props.width,
 	        	events: {
-	          		'onStateChange': _this._handlePlayerStateChange
+	          		'onStateChange': _this._handlePlayerStateChange,
+	          		'onReady': _this._onPlayerReady
 	        	}
 	      	});
 
@@ -79,6 +80,10 @@ var ReactYoutubePlayer = React.createClass({
 	    	}
 	    }
   	},
+
+  	_onPlayerReady: function(event) {
+        event.target.playVideo();
+    },
 
 	/**
    * Respond to player events
