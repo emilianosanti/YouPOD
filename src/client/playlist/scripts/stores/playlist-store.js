@@ -10,20 +10,24 @@ var VideoListStore = Flux.createStore({
   },
 
   getAll: function() {
-      return this._videos;
+    return this._videos;
   },
 
   getVideo: function(id) {
-    return this._videos[id];
+    return this._videos[this._findVideoIndexByVideoId(id)];
   },
 
   addVideo: function(video) {
     this._videos.push(video);
+
     this.emit('change');
   },
 
   deleteVideo: function(id) {
-    delete this._videos[id];
+
+    delete this._videos[this._findVideoIndexByVideoId(id)];
+
+    this.emit('change');
   },
 
   currentlyPlaying: function() {
@@ -38,6 +42,13 @@ var VideoListStore = Flux.createStore({
       else {
         return currentlyPlayingVideoArray[0];
       }
+  },
+
+  _findVideoIndexByVideoId: function(videoId) {
+    return this._videos.findIndex(
+      function(video, index, array){
+        return video.videoId === id;
+      });
   },
 
   actions: {
