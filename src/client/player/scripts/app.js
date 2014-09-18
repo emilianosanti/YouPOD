@@ -31,17 +31,33 @@ var App = React.createClass({
 
   	render: function() {
   		console.log('App - render: ' + JSON.stringify(this.state));
-  		return (
-	  		<YTContainer>
-  				<YTIframe>
-  					<ReactYoutubePlayer 
-						  videoId={this.state.currentlyPlayingVideo.videoId}
-  						height={this.calculatePlayerHeight()} 
-						width={this.calculatePlayerWidth()}
-            ended={this._handleEnd}/>
-  				</YTIframe>
-			</YTContainer>
-		)
+
+      var ret = {};
+
+      if (this.state.currentlyPlayingVideo.videoId) {
+        ret = (
+          <YTContainer>
+            <YTIframe>
+              <ReactYoutubePlayer 
+                videoId={this.state.currentlyPlayingVideo.videoId}
+                height={this.calculatePlayerHeight()} 
+              width={this.calculatePlayerWidth()}
+              ended={this._handleEnd}/>
+            </YTIframe>
+          </YTContainer>
+          );
+      } else {
+        ret = (
+          <YTContainer>
+            <YTIframe>
+              <img src='./images/Sleepy.png'></img>
+            </YTIframe>
+            <span className='yt--no-video-span'>NO MUSIC NO FUN!</span>
+          </YTContainer>
+          );
+      }
+
+  		return ret;
     },  
 
     _handleEnd: function() {
