@@ -33,7 +33,7 @@ var App = React.createClass({
 	  		<YTContainer>
           <input className="yt--input-url" id="inputurl" placeholder="Insert url here to add" 
             onChange={this.onUrlChange} 
-            onKeyPress={this.enterKey} 
+            onKeyUp={this.enterKey} 
             value={this.state.url}/>       
 
           <button onClick={this.handleAddUrl} className = "yt--button" id="buttonid" title="Click To Add" >Add
@@ -63,13 +63,13 @@ var App = React.createClass({
   	},
 
     enterKey: function(e) {
-      var key = e.which;
-      if (key == 13){ 
+      if (e.keyCode === 13){ 
         if(this.state.url != ""){
           this.handleAddUrl();
         }
       }
     },
+
 
     onUrlChange: function(e) {
       this.setState({url: e.target.value});
