@@ -19,7 +19,8 @@ var App = React.createClass({
     	return {
     		video: [],
         url: '',
-    		currentlyPlayingVideo: {videoId: '', title: '', playing: false, nextVideoId: ''}
+    		currentlyPlayingVideo: {videoId: '', title: '', playing: false, nextVideoId: '', addedBy: '',
+          votedBy: []}
     	};
   	},
 

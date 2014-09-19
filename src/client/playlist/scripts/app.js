@@ -2,6 +2,7 @@
 
 var React = require("react");
 var Flux = require('delorean.js').Flux;
+var $ = require('jquery');
 
 var Actions = require('./actions/actions');
 var VideoDispatcher = require('./dispatcher/dispatcher');
@@ -17,7 +18,8 @@ var App = React.createClass({
     	return {
     		videolist: [],
         url: '',
-    		currentlyPlayingVideo: {videoId: '', title: '', playing: false, nextVideoId: ''}
+    		currentlyPlayingVideo: {videoId: '', title: '', playing: false, nextVideoId: '', addedBy: '',
+          votedBy: []}
     	};
   	},
 
@@ -78,8 +80,10 @@ var App = React.createClass({
     handleAddUrl: function () {  
       if(this.state.url != "") {
           var videoId = this.getVideoId(this.state.url);
-
-          Actions.addVideo({videoId: videoId, title: "Title", playing: false, nextVideoId: ''}); 
+          $.get('/api/ip', function(ip) {
+            Actions.addVideo({videoId: videoId, title: "Title", playing: false, nextVideoId: '', 
+            addedBy: ip, votedBy: []});
+          }); 
       }
     },
 
