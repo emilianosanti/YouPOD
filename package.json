@@ -34,12 +34,13 @@
     "run-sequence": "^0.3.6"
   },
   "dependencies": {
-    "react-tools": "~0.11.1",
-    "react-async": "1.0.1",
-    "require-sdk": "0.0.2",
+    "array.prototype.findindex": "^1.0.0",
+    "body-parser": "~1.0.1",
     "delorean.js": "0.6.0",
     "express": "4.8.7",
-    "body-parser": "~1.0.1",
-    "jquery": "^2.1.1"
+    "jquery": "^2.1.1",
+    "react-async": "1.0.1",
+    "react-tools": "~0.11.1",
+    "require-sdk": "0.0.2"
   }
 }
