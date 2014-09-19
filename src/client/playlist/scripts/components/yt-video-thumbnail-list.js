@@ -61,17 +61,16 @@ var VideoThumbnailList = React.createClass({
 					}
 					_this.props.videos[index].votedBy.push(ip);
 				}
-
-				if (_this.props.videos[index].votedBy.length === 2) {
-	            	$.post('/api/del', {'videoId' : _this.props.videos[index].videoId}, function(res){
-	            		console.log('ATRODEN');
-	            	});
-	            	_this.props.videos.splice(index, 1);
-	            }
             } else {
             	_this.props.videos[index].votedBy = [ip];
             }
-            console.log(_this.props.videos[index].videoId);
+            if (_this.props.videos[index].votedBy.length === 2) {
+            	$.post('/api/del', {'videoId' : _this.props.videos[index].videoId}, function(res){
+            		console.log('ATRODEN');
+            	});
+            	_this.props.videos.splice(index, 1);
+            }
+            console.log(JSON.stringify(_this.props.videos[index].votedBy));
          });
 	}
 });
