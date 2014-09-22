@@ -19,7 +19,6 @@ var VideoThumbnailList = React.createClass({
 		
 		return 	(
 		<div className="yt--thumbnail-container">
-				<span className="yt--thumbnail-span">CHECKOUT THE PLAYLIST</span>
 					<ul className="yt--videoThumbnailList" id="yt--video-thumbnail">
 					{
 						this.props.videos.map(

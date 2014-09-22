@@ -80,50 +80,30 @@
 	display: inline;
 	list-style-type: none;
 	padding-right: 44px;
+		-ms-transform: rotate(7deg); /* IE 9 */
+    -webkit-transform: rotate(7deg); /* Chrome, Safari, Opera */
+    transform: rotate(7deg);
 }
 
 .yt--videoThumbnailList {
-	float: left;
 	display: inline-block;
-	clear: both;
-	margin-left: 6px;
-	-webkit-transition: 1s; /* For Safari 3.1 to 6.0 */
-     transition: 1s;
 }
 
 .yt--body {
 	background-image: url(../images/ytback.jpg);
 	overflow: auto;
-	overflow-y: hidden;
 }
 
 .yt--thumbnail-container {
-	position: absolute;
-	bottom: 0;
-	width: 700%;
-    height: 30px;
-	background-color: rgba(255, 255, 255, 0.5);
-    -webkit-transition: height 1s;
-    transition: height 1s;
-    position: fixed;
-	overflow-y: hidden;
-	left: 0;
-
-    &:hover {
-        height: 150px;
-    }
+	text-align: center;
 }
 
 .yt--thumbnail-span {
 	font-size: 20px;
 	font-family: Arial, Helvetica, sans-serif;
 	color: #D0F8FF;
-	float: left;
 	clear: both;
-	text-align: left;
 	width: 100%;
-	padding-bottom: 7px;
-	background-color: rgba(0, 0, 0, 0.5);
 }
 
 .yt--thumbnail-content {
