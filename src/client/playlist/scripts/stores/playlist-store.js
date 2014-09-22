@@ -38,7 +38,7 @@ var VideoListStore = Flux.createStore({
         );
 
       if (currentlyPlayingVideoArray.length <= 0)
-        return {videoId: '', title: '', playing: false, nextVideoId: ''}
+        return {videoId: '', title: '', playing: false, nextVideoId: '', votes: 0}
       else {
         return currentlyPlayingVideoArray[0];
       }
