@@ -58,7 +58,9 @@ router.route('/del')
 	.post(function(req, res){
 		var id = req.body.videoId;
 		for(var idx in _videos) {
-
+			if(_videos[0].videoId === id) {
+				_videos[1].playing = true;
+			}
 			if (_videos[idx].videoId === id) {
 
 				_videos.splice(idx, 1);
