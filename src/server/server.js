@@ -54,28 +54,28 @@ router.route('/next')
 		}
 });
 
-router.route('/del')
-	.post(function(req, res){
-		var id = req.body.videoId;
-		for(var idx in _videos) {
-
-			if (_videos[idx].videoId === id) {
-
-				_videos.splice(idx, 1);
-			}
-		}
-	});
-
 router.route('/vote')
 	.post(function(req, res){
 		var id = req.body.videoId;
+		var index = '';
+		var votes = 0;
 		for(var idx in _videos) {
 
 			if (_videos[idx].videoId === id) {
 
 				_videos[idx].votes++;
+				votes = _videos[idx].votes;
+				index = idx;
+				break;
 			}
 		}
+		if (votes === 3) {
+			if (index === "0" && _videos[1]) {
+				_videos[1].playing = true;
+			}
+			_videos.splice(index, 1);
+		}
+		res.send({msg : ''});
 	});
 
 router.route('/videos')
