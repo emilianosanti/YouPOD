@@ -57,7 +57,10 @@ var VideoThumbnailList = React.createClass({
 			type : 'GET',
 			url : 'http://gdata.youtube.com/feeds/api/videos/' + videoId + '?v=2',
 			success : function(data) {
-				title = $(data).find('entry').find('title').text();
+				$(data).find('entry').find('title').each(function() {
+					title = $(this).text();
+				});
+				console.log('TITLE: ' + title);
 			},
 			async : false
 		});
@@ -93,25 +96,18 @@ var VideoThumbnailList = React.createClass({
   	},
 
 	vote: function(index) {
-		$.post('/api/vote', {'videoId' : this.props.videos[index].videoId});
-		this.props.videos[index].votes++;
-		console.log(this.props.videos[index].votes);
+		
+		var data = {'videoId' : this.props.videos[index].videoId};
 
-		switch(this.props.videos[index].votes){
-			case 1:
-				$('#'+this.props.videos[index].videoId).css("opacity", "0.7");
-				break;
-			case 2:
-				$('#'+this.props.videos[index].videoId).css("opacity", "0.3");
-				break;
-			case 3:
-				$.post('/api/del', {'videoId' : this.props.videos[index].videoId});
-        		this.props.videos.splice(index, 1);
-        		location.reload();
-        		break;
-        	default:
-        		console.log('Oops!');     	
-        }
+		$.ajax({
+			type : 'POST',
+			data : data,
+			url : '/api/vote',
+			dataType : 'JSON'
+		}).done(function(response) {
+			// Check for successful (blank) response
+			location.reload();
+		});   	
 	}
 });
 
