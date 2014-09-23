@@ -28,8 +28,9 @@ var VideoThumbnailList = React.createClass({
 									className="yt--videoThumbnail">
 									<a href="#" onClick={self.vote.bind(self, i)}>
 										<img id={v.videoId} src={self.getImageURL(v.videoId)} 
-											style={self.getOpacity(v.videoId)}/>
+											style={self.getOpacity(v.videoId)} />
 									</a>
+									<span className="yt--video-name">{self.getThumbnailTitle(v.videoId)}</span>
 								</li>
 							);
 						}
@@ -47,6 +48,21 @@ var VideoThumbnailList = React.createClass({
 
 	getImageURL: function(videoId) {
 		return "http://img.youtube.com/vi/" + videoId + "/default.jpg"
+	},
+
+	getThumbnailTitle: function(videoId) {
+		var title = '';
+
+		$.ajax({
+			type : 'GET',
+			url : 'http://gdata.youtube.com/feeds/api/videos/' + videoId + '?v=2',
+			success : function(data) {
+				title = $(data).find('entry').find('title').text();
+			},
+			async : false
+		});
+
+		return title;
 	},
 
 	getOpacity: function(videoId) {
