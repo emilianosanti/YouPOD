@@ -2,7 +2,6 @@ require('array.prototype.findindex');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-var ip = require('ip');
 
 var port = process.env.PORT;
 var isDevEnvironment = process.env.DEVELOPMENT == 'true';
@@ -51,30 +50,31 @@ router.route('/next')
 				res.json(_videos[0]);
 			}
 		} else {
-			res.json({videoId: '', title: '', playing: false, nextVideoId: '', addedBy: '', votedBy: []})
+			res.json({videoId: '', title: '', playing: false, nextVideoId: '', votes: 0})
 		}
 });
-
-router.route('/ip')
-	.get(function(req, res){
-		res.json(ip.address());
-	});
 
 router.route('/del')
 	.post(function(req, res){
 		var id = req.body.videoId;
 		for(var idx in _videos) {
 
-			console.log('VIDEOS ANTES: ' + JSON.stringify(_videos));
-
 			if (_videos[idx].videoId === id) {
-
-				console.log('VIDEOS ID: ' + _videos[idx].videoId + ' ID ENVIADO: ' + id);
 
 				_videos.splice(idx, 1);
 			}
+		}
+	});
 
-			console.log('VIDEOS DESPUÉS: ' + JSON.stringify(_videos));
+router.route('/vote')
+	.post(function(req, res){
+		var id = req.body.videoId;
+		for(var idx in _videos) {
+
+			if (_videos[idx].videoId === id) {
+
+				_videos[idx].votes++;
+			}
 		}
 	});
 
@@ -87,7 +87,7 @@ router.route('/videos')
 			res.status(400).send('{message: Video is undefined or videoId field is not defined}');
 		} else {
 			_videos.push({videoId : video.videoId, title: video.title, playing: shouldPlay, nextVideoId: '', 
-				addedBy: video.addedBy, votedBy: video.votedBy});
+				votes: video.votes});
 
 			if (_videos.length > 1)
 				_videos[_videos.length - 2].nextVideoId = video.videoId;

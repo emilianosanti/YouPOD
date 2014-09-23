@@ -19,22 +19,24 @@ var VideoThumbnailList = React.createClass({
 		
 		return 	(
 		<div className="yt--thumbnail-container">
-					<ul className="yt--videoThumbnailList" id="yt--video-thumbnail">
-					{
-						this.props.videos.map(
-									function(v, i) {
-								return (
-									<li key={v.videoId}  
-										className="yt--videoThumbnail">
-										<a href="#" onClick={self.vote.bind(self, i)}>
-											<img src={self.getImageURL(v.videoId)}/>
-										</a>
-									</li>
-								);
-							}
-						)
-					}
-					</ul>
+				<ul className="yt--videoThumbnailList" id="yt--video-thumbnail">
+				{
+					this.props.videos.map(
+								function(v, i) {
+							return (
+								<li key={v.videoId}  
+									className="yt--videoThumbnail">
+									<a href="#" onClick={self.vote.bind(self, i)}>
+										<img id={v.videoId} src={self.getImageURL(v.videoId)} 
+											style={self.getOpacity(v.videoId)} />
+									</a>
+									<span className="yt--video-name">{self.getThumbnailTitle(v.videoId)}</span>
+								</li>
+							);
+						}
+					)
+				}
+				</ul>
 		</div> 
 		);
 	},
@@ -48,29 +50,68 @@ var VideoThumbnailList = React.createClass({
 		return "http://img.youtube.com/vi/" + videoId + "/default.jpg"
 	},
 
-	vote: function(index) {
-		var _this = this;
+	getThumbnailTitle: function(videoId) {
+		var title = '';
 
-		$.get('/api/ip', function(ip) {
-            var votes = _this.props.videos[index].votedBy;
-            if (votes) {
-            	for(var vote in votes) {
-					if(votes[vote] === ip) {
-						break;
-					}
-					_this.props.videos[index].votedBy.push(ip);
-				}
-            } else {
-            	_this.props.videos[index].votedBy = [ip];
-            }
-            if (_this.props.videos[index].votedBy.length === 2) {
-            	$.post('/api/del', {'videoId' : _this.props.videos[index].videoId}, function(res){
-            		console.log('ATRODEN');
-            	});
-            	_this.props.videos.splice(index, 1);
-            }
-            console.log(JSON.stringify(_this.props.videos[index].votedBy));
-         });
+		$.ajax({
+			type : 'GET',
+			url : 'http://gdata.youtube.com/feeds/api/videos/' + videoId + '?v=2',
+			success : function(data) {
+				title = $(data).find('entry').find('title').text();
+			},
+			async : false
+		});
+
+		return title;
+	},
+
+	getOpacity: function(videoId) {
+
+	  	var _this = this;
+
+      	for (var idx in _this.props.videos) {
+
+	      	if (_this.props.videos[idx].videoId === videoId) {
+	          
+	          switch(this.props.videos[idx].votes){
+	            case "0":
+	            case 0:
+	              return {'opacity' : 1};
+	              break;
+	            case 1:
+	              return {'opacity' : 0.7};
+	              break;
+	            case 2:
+	              return {'opacity' : 0.3};
+	              break;
+	            default:
+	              console.log('Oops!');
+	          }
+	          break;
+	       }
+   	  	}
+  	},
+
+	vote: function(index) {
+		$.post('/api/vote', {'videoId' : this.props.videos[index].videoId});
+		this.props.videos[index].votes++;
+		console.log(this.props.videos[index].votes);
+
+		switch(this.props.videos[index].votes){
+			case 1:
+				$('#'+this.props.videos[index].videoId).css("opacity", "0.7");
+				break;
+			case 2:
+				$('#'+this.props.videos[index].videoId).css("opacity", "0.3");
+				break;
+			case 3:
+				$.post('/api/del', {'videoId' : this.props.videos[index].videoId});
+        		this.props.videos.splice(index, 1);
+        		location.reload();
+        		break;
+        	default:
+        		console.log('Oops!');     	
+        }
 	}
 });
 

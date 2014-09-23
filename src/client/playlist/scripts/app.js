@@ -18,8 +18,7 @@ var App = React.createClass({
     	return {
     		videolist: [],
         url: '',
-    		currentlyPlayingVideo: {videoId: '', title: '', playing: false, nextVideoId: '', addedBy: '',
-          votedBy: []}
+    		currentlyPlayingVideo: {videoId: '', title: '', playing: false, nextVideoId: '', votes: 0}
     	};
   	},
 
@@ -72,7 +71,6 @@ var App = React.createClass({
       }
     },
 
-
     onUrlChange: function(e) {
       this.setState({url: e.target.value});
     },
@@ -80,17 +78,15 @@ var App = React.createClass({
     handleAddUrl: function () {  
       if(this.state.url != "") {
           var videoId = this.getVideoId(this.state.url);
-          $.get('/api/ip', function(ip) {
-            Actions.addVideo({videoId: videoId, title: "Title", playing: false, nextVideoId: '', 
-            addedBy: ip, votedBy: []});
-          }); 
+          Actions.addVideo({videoId: videoId, title: "Title", playing: false, nextVideoId: '', 
+            votes: 0});
       }
     },
 
     getVideoId: function(url) {
       var regex = /(youtu\.be\/|youtube\.com\/(watch\?(.*&)?v=|(embed|v)\/))([^\?&"'>]+)/;
       if (url) return url.match(regex)[5];
-    },
+    }
 });
 
 module.exports = App;
