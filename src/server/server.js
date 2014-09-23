@@ -59,7 +59,11 @@ router.route('/del')
 		var id = req.body.videoId;
 		for(var idx in _videos) {
 			if(_videos[0].videoId === id) {
-				_videos[1].playing = true;
+				if(_videos.length > 1){
+					_videos[1].playing = true;
+				}	
+				_videos.splice(idx, 1);
+				break;
 			}
 			if (_videos[idx].videoId === id) {
 

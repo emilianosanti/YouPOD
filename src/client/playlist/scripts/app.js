@@ -37,7 +37,7 @@ var App = React.createClass({
             onKeyUp={this.enterKey} 
             value={this.state.url}/>       
 
-          <button onClick={this.handleAddUrl} className = "yt--button" id="buttonid" title="Click To Add" >Add
+          <button onClick={this.handleAddUrl} className = "yt--button" id="buttonid" title="Click To Add" >+
           </button>
 
 					<VideoThumbnailList videos={this.state.videolist}/>
