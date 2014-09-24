@@ -78,23 +78,26 @@ var App = React.createClass({
     handleAddUrl: function () {  
       if(this.state.url != "") {
           var videoId = this.getVideoId(this.state.url);
-          if(this.state.videolist.length < 1)
-            Actions.addVideo({videoId: videoId, title: "Title", playing: false, nextVideoId: '', votes: 0});
-          else if(this.getNoRepeatVideo(videoId))
-            Actions.addVideo({videoId: videoId, title: "Title", playing: false, nextVideoId: '', votes: 0});
-          else
-            this.setState({url: ""});
-            console.log("No puede ingresar dos temas iguales.");
+          if(this.isNotRepeated(videoId)) {
+              Actions.addVideo({videoId: videoId, title: "Title", playing: false, nextVideoId: '', 
+                votes: 0});
+          }
+          else {
+              this.setState({url: ""});
+          }
       }
     },
 
-    getNoRepeatVideo: function (videoId){
+    isNotRepeated: function (videoId) {
       var _this = this;
       var ret = true;
-      for(var idx in _this.state.videolist){
-        if (_this.state.videolist[idx].videoId == videoId){
-          ret= false; break;
-        }        
+      if (_this.state.videolist.length > 0) {
+          for(var idx in _this.state.videolist) {
+              if (_this.state.videolist[idx].videoId == videoId) {
+                ret = false; 
+                break;
+              }        
+          }
       }
       return ret;
     },
